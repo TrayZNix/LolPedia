@@ -15,13 +15,13 @@ class ChampionDetailsState extends Equatable {
 
   ChampionDetailsState copyWith({
     ChampionDetailsStatus? status,
-    Data? champions,
+    Data? data,
     bool? loading,
   }) {
     return ChampionDetailsState(
         status: status ?? this.status,
         loading: loading ?? this.loading,
-        champions: champions ?? this.champions);
+        champions: data ?? this.champions);
   }
 
   @override

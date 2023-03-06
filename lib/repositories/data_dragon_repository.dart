@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:lol_pedia/models/ChampionDetails.dart';
 
+import '../models/ChampionDetails.dart';
 import '../models/champion.dart';
 
 class DataDragonRepository {
@@ -30,18 +30,15 @@ class DataDragonRepository {
       var response = await http.get(
           Uri.parse("$DataDragonURL/13.4.1/data/es_ES/champion/$champ.json"));
       var xd = json.decode(response.body);
-      print(xd);
-      Map<String, dynamic> jsonMap = jsonDecode(response.body);
-      String championName = 'Aatrox';
-      String championKey = jsonMap['data'];
-      // .firstWhere(
-      //     (key) => key.toLowerCase() == championName.toLowerCase(),
-      //     orElse: () => null);
-      // if (championKey != null) {
-      //   String name = jsonMap['data'][championKey]['name'];
-      //   print(name); // Output: Ashe
-      // }
-      return ChampionDetails.fromJson(xd).data;
+      Map<String, dynamic> jsonMap = jsonDecode(response.body)['data'];
+      Map<String, dynamic> data;
+      Data? datos;
+      jsonMap.forEach(
+        (key, value) {
+          datos = Data.fromJson(value);
+        },
+      );
+      return datos;
     } catch (error) {
       print(error.toString());
     }

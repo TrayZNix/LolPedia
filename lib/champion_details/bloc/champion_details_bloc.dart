@@ -33,10 +33,9 @@ class ChampionDetailsBloc
   Future<void> cargarCampeones(
       LoadChampionDetails event, Emitter<ChampionDetailsState> emit) async {
     emit(ChampionDetailsLoading());
-    print(championName);
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
-    Data? champs = await repo.getChampionsDetails(championName);
+    Data? data = await repo.getChampionsDetails(championName);
     emit(ChampionDetailsLoaded()
-        .copyWith(status: ChampionDetailsStatus.success, champions: champs));
+        .copyWith(status: ChampionDetailsStatus.success, data: data));
   }
 }

@@ -40,7 +40,7 @@ class Homepage extends StatelessWidget {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return ChampionDetails(
-                                championName: state.champions[index].name);
+                                championName: state.champions[index].id ?? "");
                           }));
                         },
                         child: Stack(

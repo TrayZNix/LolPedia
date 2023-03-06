@@ -4,59 +4,9 @@
 
 import 'dart:convert';
 
-ChampionDetails championDetailsFromJson(String str) =>
-    ChampionDetails.fromJson(json.decode(str));
-
-String championDetailsToJson(ChampionDetails data) =>
-    json.encode(data.toJson());
-
-class ChampionDetails {
-  ChampionDetails({
-    required this.type,
-    required this.format,
-    required this.version,
-    required this.data,
-  });
-
-  String type;
-  String format;
-  String version;
-  Data data;
-
-  factory ChampionDetails.fromJson(Map<String, dynamic> json) =>
-      ChampionDetails(
-        type: json["type"],
-        format: json["format"],
-        version: json["version"],
-        data: Data.fromJson(json["data"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "type": type,
-        "format": format,
-        "version": version,
-        "data": data.toJson(),
-      };
-}
 
 class Data {
   Data({
-    required this.aatrox,
-  });
-
-  Aatrox aatrox;
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        aatrox: Aatrox.fromJson(json["Aatrox"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Aatrox": aatrox.toJson(),
-      };
-}
-
-class Aatrox {
-  Aatrox({
     required this.id,
     required this.key,
     required this.name,
@@ -94,7 +44,7 @@ class Aatrox {
   Passive? passive;
   List<dynamic> recommended;
 
-  factory Aatrox.fromJson(Map<String, dynamic> json) => Aatrox(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         key: json["key"],
         name: json["name"],
