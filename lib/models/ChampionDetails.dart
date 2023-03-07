@@ -51,7 +51,7 @@ class Data {
         title: json["title"],
         image: Image.fromJson(json["image"]),
         skins: List<Skin>.from(json["skins"].map((x) => Skin.fromJson(x))),
-        lore: json["lore"],
+        lore: utf8.decode(json["lore"].codeUnits),
         blurb: json["blurb"],
         allytips: List<String>.from(json["allytips"].map((x) => x)),
         enemytips: List<String>.from(json["enemytips"].map((x) => x)),

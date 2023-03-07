@@ -27,20 +27,15 @@ class DataDragonRepository {
 
   Future<Data?> getChampionsDetails(String champ) async {
     try {
-      var response = await http.get(
-          Uri.parse("$DataDragonURL/13.4.1/data/es_ES/champion/$champ.json"));
-      var xd = json.decode(response.body);
-      Map<String, dynamic> jsonMap = jsonDecode(response.body)['data'];
-      Map<String, dynamic> data;
-      Data? datos;
-      jsonMap.forEach(
-        (key, value) {
-          datos = Data.fromJson(value);
-        },
-      );
-      return datos;
+      final response = await http.get(
+          Uri.parse('$DataDragonURL/13.4.1/data/es_ES/champion/$champ.json'));
+      final jsonMap = json.decode(response.body) as Map<String, dynamic>;
+      final dataJson = jsonMap['data'].values.first as Map<String, dynamic>;
+      final data = Data.fromJson(dataJson);
+      return data;
     } catch (error) {
       print(error.toString());
     }
   }
+
 }

@@ -23,6 +23,11 @@ dependencies:
   shared_preferences: ^2.0.18
   cached_network_image: ^3.2.3
   responsive_grid_list: ^1.3.1
+  carousel_images: ^1.1.2
+  google_fonts: ^4.0.3
+  flutter_launcher_icons: ^0.12.0
+  rename: ^2.1.1
+  animations: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -32,11 +37,17 @@ dev_dependencies:
   mocktail: ^0.3.0
   very_good_analysis: ^3.1.0
   injectable_generator: ^2.1.3
+  flutter_launcher_icons: ^0.12.0
 flutter:
   uses-material-design: true
-  # assets:
-  #   - resources/images/user_default.jpg
   fonts:
     - family: super_punch
       fonts:
         - asset: ./resources/fonts/SUPER PUNCH.ttf
+    - family: kenyan_coffee
+      fonts:
+        - asset: ./resources/fonts/kenyan coffee rg.otf
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_logo.png"

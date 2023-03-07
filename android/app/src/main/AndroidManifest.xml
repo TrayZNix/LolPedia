@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.robertocarvajal.lol_pedia">
+    package="com.example.lol_pedia">
     
 <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="lol_pedia"
+        android:label="lolpedia"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

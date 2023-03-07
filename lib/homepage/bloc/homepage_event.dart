@@ -7,3 +7,4 @@ abstract class HomepageEvent extends Equatable {
 }
 
 class LoadChampions extends HomepageEvent {}
+

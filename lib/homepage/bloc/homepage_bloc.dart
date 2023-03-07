@@ -33,7 +33,24 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     emit(HomepageLoading());
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
-    emit(HomepageLoaded()
-        .copyWith(status: HomepageStatus.success, champions: champs));
+    emit(HomepageLoaded().copyWith(
+        status: HomepageStatus.success,
+        champions: champs,
+        filteredChamps: champs));
   }
+  
+  // Future<void> filtrarCampeones(
+  //     FilterLoadedChampions event, Emitter<HomepageState> emit) async {
+  //   emit(HomepageFilterChampions().copyWith(
+  //       champions: champs,
+  //       filteredChamps: champs
+  //           .where((element) =>
+  //               element.name.toLowerCase().contains(filter.toLowerCase()))
+  //           .toList(),
+  //       loading: false,
+  //       status: HomepageStatus.success));
+  // }
+
+  late List<Datum> champs = [];
+  late String filter = "";
 }
