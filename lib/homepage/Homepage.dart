@@ -7,109 +7,91 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:animations/animations.dart';
 import 'package:lol_pedia/models/champion.dart';
 
-
-class Homepage extends StatefulWidget {
+class Homepage extends StatelessWidget {
   Homepage({super.key});
+  final HomepageBloc bloc = HomepageBloc()..add(LoadChampions());
 
-  @override
-  State<StatefulWidget> createState() => HomepageWidgetState();
-}
-
-class HomepageWidgetState extends State<Homepage> {
-  late List<Datum> campeones = [];
-
-  String _text = "";
-
-  void setCampeones(String filtro) {
-    setState(() {
-      _text = filtro;
-      print(filtro);
-    });
+  void filtrarCampeones(String filtro) {
+    bloc.filter = filtro;
+    bloc.add(FilterLoadedChampions());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomepageBloc(),
-      child: BlocBuilder<HomepageBloc, HomepageState>(
-        bloc: HomepageBloc()..add(LoadChampions()),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBarConBusqueda(
+        bloc: bloc,
+        filtrarCampeones: filtrarCampeones,
+      ),
+      body: BlocBuilder<HomepageBloc, HomepageState>(
+        bloc: bloc,
         builder: (context, state) {
-          campeones = state.champions
-              .where((element) =>
-                  element.name.toLowerCase().contains(_text.toLowerCase()))
-              .toList();
-          return Scaffold(
-            backgroundColor: Colors.black,
-            appBar: AppBarConBusqueda(
-              setCampeones: setCampeones,
-              bloc: BlocProvider.of<HomepageBloc>(context),
-              state: state,
-            ),
-            body: state is HomepageLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : state.status == HomepageStatus.success
-                    ? Builder(
-                        builder: (context) {
-                          return GridView.count(
-                              crossAxisCount: 3,
-                              childAspectRatio: 1,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              children:
-                                  List.generate(campeones.length, (index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return ChampionDetails(
-                                          championName:
-                                              campeones[index].id ?? "");
-                                    }));
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      Center(
-                                          child: CachedNetworkImage(
-                                        imageUrl:
-                                            "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/${campeones[index].image!.full}",
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) =>
-                                            const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      )),
-                                      Positioned(
-                                        bottom: 20,
-                                        right: 25,
-                                        child: Text(
-                                          campeones[index].name,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "super_punch",
-                                            shadows: [
-                                              Shadow(
-                                                  color: Colors.black,
-                                                  offset: Offset(5, 5),
-                                                  blurRadius: 6),
-                                              Shadow(
-                                                  color: Colors.black,
-                                                  offset: Offset(0, 0),
-                                                  blurRadius: 6),
-                                            ],
-                                          ),
+          return state is HomepageLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : state.status == HomepageStatus.success
+                  ? Builder(
+                      builder: (context) {
+                        return GridView.count(
+                            crossAxisCount: 3,
+                            childAspectRatio: 1,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            children: List.generate(state.filteredChamps.length,
+                                (index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ChampionDetails(
+                                        championName:
+                                            state.filteredChamps[index].id ??
+                                                "");
+                                  }));
+                                },
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                        child: CachedNetworkImage(
+                                      imageUrl:
+                                          "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/${state.filteredChamps[index].image!.full}",
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    )),
+                                    Positioned(
+                                      bottom: 20,
+                                      right: 25,
+                                      child: Text(
+                                        state.filteredChamps[index].name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "super_punch",
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black,
+                                                offset: Offset(5, 5),
+                                                blurRadius: 6),
+                                            Shadow(
+                                                color: Colors.black,
+                                                offset: Offset(0, 0),
+                                                blurRadius: 6),
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }));
-                        },
-                      )
-                    : const Center(
-                        child: Text("Error loading the champions"),
-                      ),
-          );
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }));
+                      },
+                    )
+                  : const Center(
+                      child: Text("Error loading the champions"),
+                    );
         },
       ),
     );
@@ -117,25 +99,35 @@ class HomepageWidgetState extends State<Homepage> {
 }
 
 class AppBarConBusqueda extends StatefulWidget implements PreferredSizeWidget {
-  final ValueChanged<String> setCampeones;
-
+  final ValueChanged<String> filtrarCampeones;
   AppBarConBusqueda(
-      {super.key,
-      required this.bloc,
-      required this.state,
-      required this.setCampeones});
+      {super.key, required this.bloc, required this.filtrarCampeones});
   final HomepageBloc bloc;
-  final HomepageState state;
-  bool estaBuscando = false;
+  var estaBuscando = false;
 
   @override
-  State<StatefulWidget> createState() => AppBarConBusquedaState();
+  // ignore: no_logic_in_create_state
+  State<StatefulWidget> createState() => AppBarConBusquedaState(bloc);
   @override
   final Size preferredSize = const Size.fromHeight(kToolbarHeight);
 }
 
 class AppBarConBusquedaState extends State<AppBarConBusqueda> {
-  AppBarConBusquedaState();
+  AppBarConBusquedaState(this.bloc);
+  final HomepageBloc bloc;
+  final myFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,16 +163,18 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                   flex: 10,
                   child: TextField(
                     onChanged: (value) {
-                      widget.setCampeones(controller.text);
+                      widget.filtrarCampeones(controller.text);
                     },
                     controller: controller,
+                    focusNode: myFocusNode,
                     style: GoogleFonts.anekDevanagari(color: Colors.white),
                     decoration: InputDecoration(
                         disabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
                         focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
-                        prefixIcon: const Icon(Icons.search),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.white),
                         hintText: "Nombre de campeón",
                         labelStyle:
                             GoogleFonts.anekDevanagari(color: Colors.white),
@@ -196,6 +190,7 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                 ),
                 IconButton(
                     onPressed: () {
+                      widget.filtrarCampeones("");
                       setState(() {
                         widget.estaBuscando = !widget.estaBuscando;
                       });

@@ -36,6 +36,6 @@ class DataDragonRepository {
     } catch (error) {
       print(error.toString());
     }
+    return null;
   }
-
 }

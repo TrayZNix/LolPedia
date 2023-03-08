@@ -29,7 +29,7 @@ class HomepageState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [status, loading];
 }
 
 class HomepageInitial extends HomepageState {}
@@ -38,3 +38,4 @@ class HomepageLoading extends HomepageState {}
 
 class HomepageLoaded extends HomepageState {}
 
+class HomepageFilterChampions extends HomepageState {}

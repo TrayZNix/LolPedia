@@ -6,6 +6,7 @@ import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'dart:math';
 
 import '../../models/champion.dart';
 
@@ -21,11 +22,13 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
+  int random = Random().nextInt(100);
   HomepageBloc() : super(HomepageInitial()) {
     on<LoadChampions>(
       cargarCampeones,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<FilterLoadedChampions>(filtrarCampeones);
   }
 
   Future<void> cargarCampeones(
@@ -33,24 +36,29 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     emit(HomepageLoading());
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
+    print(random);
     emit(HomepageLoaded().copyWith(
         status: HomepageStatus.success,
         champions: champs,
         filteredChamps: champs));
   }
-  
-  // Future<void> filtrarCampeones(
-  //     FilterLoadedChampions event, Emitter<HomepageState> emit) async {
-  //   emit(HomepageFilterChampions().copyWith(
-  //       champions: champs,
-  //       filteredChamps: champs
-  //           .where((element) =>
-  //               element.name.toLowerCase().contains(filter.toLowerCase()))
-  //           .toList(),
-  //       loading: false,
-  //       status: HomepageStatus.success));
-  // }
+
+  Future<void> filtrarCampeones(
+      FilterLoadedChampions event, Emitter<HomepageState> emit) async {
+    DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
+    List<Datum> champs = await repo.getChampions();
+    print(random);
+    emit(HomepageLoading());
+    emit(HomepageLoaded().copyWith(
+      status: HomepageStatus.success,
+      champions: champs,
+      filteredChamps: champs
+          .where((element) =>
+              element.name.toLowerCase().contains(filter.toLowerCase()))
+          .toList(),
+    ));
+  }
 
   late List<Datum> champs = [];
-  late String filter = "";
+  late String filter = "si";
 }

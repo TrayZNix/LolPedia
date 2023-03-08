@@ -39,6 +39,65 @@ class ChampionDetails extends StatelessWidget {
                   listaSkins.add(
                       "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${state.champions?.id}_${element.num}.jpg");
                 }
+                List<Widget> pasivaYHabilidadesWidget = List.generate(
+                  state.champions!.spells.length +
+                      1, // Agregar 1 para la habilidad pasiva
+                  (index) {
+                    String imageUrl;
+                    String spellLetter = "";
+                    if (index == 0) {
+                      imageUrl =
+                          "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/passive/${state.champions!.passive!.image!.full}";
+                      spellLetter = "P";
+                    } else {
+                      imageUrl =
+                          "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/spell/${state.champions!.spells[index - 1].image!.full}";
+                      if (index == 1) {
+                        spellLetter = "Q";
+                      } else if (index == 2) {
+                        spellLetter = "W";
+                      } else if (index == 3) {
+                        spellLetter = "E";
+                      } else if (index == 4) {
+                        spellLetter = "R";
+                      }
+                    }
+                    return Expanded(
+                      flex: 2,
+                      child: Stack(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            width: 50,
+                            height: 50,
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Text(
+                              spellLetter,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: "super_punch",
+                                fontSize: 20,
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(5, 5),
+                                      blurRadius: 6),
+                                  Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(0, 0),
+                                      blurRadius: 6),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
                 return SingleChildScrollView(
                     child: Column(
                   children: [
@@ -47,13 +106,10 @@ class ChampionDetails extends StatelessWidget {
                         CarouselImages(
                           scaleFactor: 0.6,
                           listImages: listaSkins,
-                          height: 300.0,
+                          height: 200,
                           borderRadius: 30.0,
                           cachedNetworkImage: true,
                           verticalAlignment: Alignment.topCenter,
-                          onTap: (index) {
-                            print('Tapped on page $index');
-                          },
                         ),
                         Positioned(
                             bottom: 15,
@@ -86,6 +142,12 @@ class ChampionDetails extends StatelessWidget {
                         style: GoogleFonts.anekDevanagari(
                           color: Colors.white,
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(25),
+                      child: Row(
+                        children: pasivaYHabilidadesWidget,
                       ),
                     )
                   ],
