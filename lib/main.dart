@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:lol_pedia/homepage/bloc/homepage_bloc.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'config/locator.dart';
 import 'homepage/Homepage.dart';
@@ -17,10 +18,15 @@ class Aplicacion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomepageBloc bloc = HomepageBloc()..add(LoadChampions());
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      home: Scaffold(
+        body: Homepage(
+          bloc: bloc,
+        ),
+      ),
     );
   }
 }

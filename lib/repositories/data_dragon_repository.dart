@@ -9,10 +9,8 @@ import '../models/champion.dart';
 
 class DataDragonRepository {
   static late DataDragonRepository _instance;
-
   static Future<DataDragonRepository> getInstance() async {
     _instance = DataDragonRepository();
-
     return _instance;
   }
 
