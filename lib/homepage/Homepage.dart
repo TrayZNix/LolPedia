@@ -14,20 +14,11 @@ class Homepage extends StatelessWidget {
   Homepage({super.key, required this.bloc});
   final HomepageBloc bloc;
 
-  void filtrarCampeones(String filtro) {
-    bloc.filter = filtro;
-    bloc.add(FilterLoadedChampions());
-  }
+  
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBarConBusqueda(
-        bloc: bloc,
-        filtrarCampeones: filtrarCampeones,
-      ),
-      body: BlocBuilder<HomepageBloc, HomepageState>(
+    return BlocBuilder<HomepageBloc, HomepageState>(
         bloc: bloc,
         builder: (context, state) {
           return state is HomepageLoading
@@ -109,7 +100,6 @@ class Homepage extends StatelessWidget {
                       child: Text("Error loading the champions"),
                     );
         },
-      ),
     );
   }
 }

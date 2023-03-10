@@ -21,7 +21,7 @@ class ChampionDetailsState extends Equatable {
     return ChampionDetailsState(
         status: status ?? this.status,
         loading: loading ?? this.loading,
-        champions: data ?? this.champions);
+        champions: data ?? champions);
   }
 
   @override

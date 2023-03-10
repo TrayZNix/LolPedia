@@ -1,9 +1,4 @@
-// To parse this JSON data, do
-//
-//     final championDetails = championDetailsFromJson(jsonString);
-
 import 'dart:convert';
-
 
 class Data {
   Data({
@@ -267,7 +262,7 @@ class Spell {
         effect: List<List<dynamic>>.from(json["effect"]
             .map((x) => x == null ? [] : List<dynamic>.from(x!.map((x) => x)))),
         effectBurn: List<String?>.from(json["effectBurn"].map((x) => x)),
-        vars: List<dynamic?>.from(json["vars"].map((x) => x)),
+        vars: List<dynamic>.from(json["vars"].map((x) => x)),
         costType: json["costType"],
         maxammo: json["maxammo"],
         range: List<dynamic>.from(json["range"].map((x) => x)),
@@ -289,6 +284,7 @@ class Spell {
         "costBurn": costBurn,
         "datavalues": datavalues?.toJson(),
         "effect": List<dynamic>.from(effect
+            // ignore: unnecessary_null_comparison
             .map((x) => x == null ? [] : List<dynamic>.from(x.map((x) => x)))),
         "effectBurn": List<dynamic>.from(effectBurn!.map((x) => x)),
         "vars": List<dynamic>.from(vars!.map((x) => x)),

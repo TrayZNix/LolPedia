@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_images/carousel_images.dart';
@@ -145,7 +144,7 @@ class ChampionDetails extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(25),
                       child: Row(
                         children: pasivaYHabilidadesWidget,
                       ),

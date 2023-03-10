@@ -2,6 +2,8 @@
 //
 //     final champions = championsFromJson(jsonString);
 
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 
 Champions championsFromJson(String str) => Champions.fromJson(json.decode(str));

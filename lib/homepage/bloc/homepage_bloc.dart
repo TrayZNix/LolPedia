@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
-import 'package:meta/meta.dart';
+// ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'dart:math';
@@ -36,7 +36,9 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     emit(HomepageLoading());
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
-    print(random);
+    if (kDebugMode) {
+      print(random);
+    }
     emit(HomepageLoaded().copyWith(
         status: HomepageStatus.success,
         champions: champs,
@@ -47,7 +49,9 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
       FilterLoadedChampions event, Emitter<HomepageState> emit) async {
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
-    print(random);
+    if (kDebugMode) {
+      print(random);
+    }
     emit(HomepageLoading());
     emit(HomepageLoaded().copyWith(
       status: HomepageStatus.success,

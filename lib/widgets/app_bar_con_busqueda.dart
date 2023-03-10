@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol_pedia/champion_details/champion_details.dart';
 import 'package:lol_pedia/homepage/bloc/homepage_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:animations/animations.dart';
-import 'package:lol_pedia/models/champion.dart';
 
+//ignore: must_be_immutable
 class AppBarConBusqueda extends StatefulWidget implements PreferredSizeWidget {
   final ValueChanged<String> filtrarCampeones;
   AppBarConBusqueda(

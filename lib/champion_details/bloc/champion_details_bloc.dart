@@ -2,9 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lol_pedia/models/ChampionDetails.dart';
+import 'package:lol_pedia/models/champion_details.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:meta/meta.dart';
+// ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
