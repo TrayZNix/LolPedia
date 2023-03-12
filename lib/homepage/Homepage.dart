@@ -11,10 +11,8 @@ import 'package:lol_pedia/models/champion.dart';
 import '../widgets/app_bar_con_busqueda.dart';
 
 class Homepage extends StatelessWidget {
-  Homepage({super.key, required this.bloc});
+  const Homepage({super.key, required this.bloc});
   final HomepageBloc bloc;
-
-  
 
   @override
   Widget build(BuildContext context) {

@@ -65,7 +65,7 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
             title: Row(
               children: [
                 Expanded(
-                  flex: 10,
+                  flex: 2,
                   child: TextField(
                     onChanged: (value) {
                       widget.filtrarCampeones(controller.text);
@@ -93,17 +93,20 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                             borderSide: BorderSide(color: Colors.white))),
                   ),
                 ),
-                IconButton(
-                    onPressed: () {
-                      widget.filtrarCampeones("");
-                      setState(() {
-                        widget.estaBuscando = !widget.estaBuscando;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ))
+                Expanded(
+                  flex: 8,
+                  child: IconButton(
+                      onPressed: () {
+                        widget.filtrarCampeones("");
+                        setState(() {
+                          widget.estaBuscando = !widget.estaBuscando;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      )),
+                )
               ],
             ),
             centerTitle: true,

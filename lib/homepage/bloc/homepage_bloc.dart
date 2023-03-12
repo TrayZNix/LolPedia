@@ -36,9 +36,6 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     emit(HomepageLoading());
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
-    if (kDebugMode) {
-      print(random);
-    }
     emit(HomepageLoaded().copyWith(
         status: HomepageStatus.success,
         champions: champs,
@@ -64,5 +61,5 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
   }
 
   late List<Datum> champs = [];
-  late String filter = "si";
+  late String filter = "";
 }

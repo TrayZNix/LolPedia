@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/homepage/bloc/homepage_bloc.dart';
+import 'package:lol_pedia/status_y_seleccion/status_y_seleccion.dart';
 import 'package:lol_pedia/widgets/app_bar_con_busqueda.dart';
 import 'config/locator.dart';
 import 'homepage/Homepage.dart';
@@ -61,18 +62,18 @@ class AplicacionState extends State<Aplicacion> {
       home: Scaffold(
         backgroundColor: Colors.black,
         appBar: appBar,
-        body: Homepage(
+        body: widget.currentIndex == 0 ? Homepage(
           bloc: widget.bloc,
-        ),
+        ) : StatusYSeleccion(),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: widget.currentIndex,
           onTap: (index) {
             cambiarIndex(index);
           },
           selectedItemColor: Colors.white,
-          unselectedLabelStyle: GoogleFonts.anekDevanagari(color: Colors.white),
-          selectedIconTheme: const IconThemeData(color: Colors.yellowAccent),
-          unselectedItemColor: Colors.white,
+          unselectedLabelStyle: GoogleFonts.anekDevanagari(color: Colors.grey[700]),
+          selectedIconTheme: const IconThemeData(color: Colors.white),
+          unselectedItemColor: Colors.grey[700],
           backgroundColor: Colors.black,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

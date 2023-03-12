@@ -45,3 +45,4 @@ app.*.map.json
 
 key.properties
 app/upload-keystore.jks
+/lib/riot_developer.key.dart
