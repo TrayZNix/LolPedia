@@ -4,6 +4,7 @@ import 'package:lol_pedia/config/locator.config.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../repositories/client_api.dart';
 import '../services/local_storage.dart';
 
 final getIt = GetIt.instance;
@@ -17,4 +18,6 @@ void setupAsyncDependencies() {
       () => LocalStorageService.getInstance());
   getIt.registerSingletonAsync<DataDragonRepository>(
       () => DataDragonRepository.getInstance());
+  getIt.registerSingletonAsync<ClientApiRepository>(
+      () => ClientApiRepository.getInstance());
 }

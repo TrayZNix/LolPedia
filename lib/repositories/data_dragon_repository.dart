@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol_pedia/models/league_status_response.dart';
 import 'package:lol_pedia/riot_developer.key.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/champion_details.dart';
 import '../models/champion.dart';
@@ -47,6 +48,7 @@ class DataDragonRepository {
           Uri.parse("$riotApiUrl/status/v4/platform-data"),
           headers: {"X-Riot-Token": RiotDeveloperKey.key});
       if (response.statusCode != 200) return null;
+      // String response = await rootBundle.loadString('lib/lol.json');
       final jsonMap = json.decode(response.body) as Map<String, dynamic>;
       LeagueStatusResponse status = LeagueStatusResponse.fromJson(jsonMap);
       if (status.incidents!.isEmpty) {

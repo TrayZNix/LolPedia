@@ -27,16 +27,23 @@ class LeagueStatusResponse {
         name: json["name"],
         locales: List<String>.from(json["locales"].map((x) => x)),
         maintenances: List<dynamic>.from(json["maintenances"].map((x) => x)),
-        incidents: List<Incident>.from(
-            json["incidents"].map((x) => Incident.fromJson(x))),
+        incidents: (json["incidents"] != null)
+            ? List<Incident>.from(
+                json["incidents"].map((x) => Incident.fromJson(x)))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "locales": List<dynamic>.from(locales!.map((x) => x)),
-        "maintenances": List<dynamic>.from(maintenances!.map((x) => x)),
-        "incidents": List<dynamic>.from(incidents!.map((x) => x.toJson())),
+        "locales":
+            (locales != null) ? List<dynamic>.from(locales!.map((x) => x)) : [],
+        "maintenances": (maintenances != null)
+            ? List<dynamic>.from(maintenances!.map((x) => x))
+            : [],
+        "incidents": (incidents != null)
+            ? List<dynamic>.from(incidents!.map((x) => x))
+            : [],
       };
 }
 
@@ -79,7 +86,7 @@ class Incident {
   Map<String?, dynamic>? toJson() => {
         "titles": titles != null
             ? List<dynamic>.from(titles!.map((x) => x.toJson()))
-            : null,
+            : [],
         "maintenance_status": maintenanceStatus,
         "incident_severity": incidentSeverity,
         "updated_at": updatedAt?.toIso8601String(),
@@ -87,10 +94,10 @@ class Incident {
         "created_at": createdAt?.toIso8601String(),
         "updates": updates != null
             ? List<dynamic>.from(updates!.map((x) => x.toJson()))
-            : null,
+            : [],
         "platforms": platforms != null
             ? List<dynamic>.from(platforms!.map((x) => x))
-            : null,
+            : [],
         "id": id,
       };
 }
@@ -138,7 +145,7 @@ class Update {
         translations: json["translations"] != null
             ? List<Title>.from(
                 json["translations"].map((x) => Title.fromJson(x)))
-            : null,
+            : [],
         updatedAt: DateTime.parse(json["updated_at"]),
         author: json["author"],
         createdAt: DateTime.parse(json["created_at"]),

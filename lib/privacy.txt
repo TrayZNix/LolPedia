@@ -1,0 +1,9 @@
+Política de privacidad
+
+Esta aplicación no recopila ni almacena ningún tipo de información personal de los usuarios. No se solicita ningún permiso de acceso a los datos del dispositivo y no se utilizan cookies para rastrear el comportamiento del usuario. Tampoco se recopila información mediante la publicidad.
+
+Como resultado, no se comparte ningún dato con terceros, incluidos anunciantes, socios comerciales o agencias gubernamentales.
+
+En resumen, la aplicación respeta la privacidad del usuario y no recopila ni utiliza ninguna información personal. Si tienes alguna pregunta o inquietud sobre nuestra política de privacidad, no dudes en ponerte en contacto con nosotros.
+
+Ten en cuenta que esta es solo una plantilla y que es importante personalizarla y adaptarla a las características específicas de tu aplicación y las regulaciones de privacidad aplicables a tu región y país. Además, aunque tu aplicación no recopile datos, es posible que Google Play requiera que incluyas una política de privacidad en tu lista de la tienda.
