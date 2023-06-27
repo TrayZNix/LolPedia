@@ -1,16 +1,20 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_images/carousel_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'bloc/champion_details_bloc.dart';
+import '../../BLOCS/champion_details_bloc/champion_details_bloc.dart';
+import '../../dinamic_general_variables.dart';
 
 class ChampionDetails extends StatelessWidget {
   final String championName;
+  final DynamicGeneralVariables riotDeveloperKey;
 
-  const ChampionDetails({super.key, required this.championName});
+  ChampionDetails({Key? key, required this.championName})
+      : riotDeveloperKey = GetIt.I.get<DynamicGeneralVariables>(),
+        super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +50,11 @@ class ChampionDetails extends StatelessWidget {
                     String spellLetter = "";
                     if (index == 0) {
                       imageUrl =
-                          "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/passive/${state.champions!.passive!.image!.full}";
+                          "http://ddragon.leagueoflegends.com/cdn/${riotDeveloperKey.versionActual}/img/passive/${state.champions!.passive!.image!.full}";
                       spellLetter = "P";
                     } else {
                       imageUrl =
-                          "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/spell/${state.champions!.spells[index - 1].image!.full}";
+                          "http://ddragon.leagueoflegends.com/cdn/${riotDeveloperKey.versionActual}/img/spell/${state.champions!.spells[index - 1].image!.full}";
                       if (index == 1) {
                         spellLetter = "Q";
                       } else if (index == 2) {

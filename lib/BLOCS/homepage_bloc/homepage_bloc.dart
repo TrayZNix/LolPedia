@@ -22,7 +22,6 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
-  int random = Random().nextInt(100);
   HomepageBloc() : super(HomepageInitial()) {
     on<LoadChampions>(
       cargarCampeones,
@@ -46,9 +45,6 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
       FilterLoadedChampions event, Emitter<HomepageState> emit) async {
     DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
     List<Datum> champs = await repo.getChampions();
-    if (kDebugMode) {
-      print(random);
-    }
     emit(HomepageLoading());
     emit(HomepageLoaded().copyWith(
       status: HomepageStatus.success,

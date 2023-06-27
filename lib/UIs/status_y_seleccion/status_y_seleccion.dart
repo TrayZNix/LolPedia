@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lol_pedia/status_y_seleccion/bloc/status_bloc.dart';
+import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
+
+import '../../BLOCS/status_seleccion_bloc/status_bloc.dart';
 
 class StatusYSeleccion extends StatelessWidget {
   const StatusYSeleccion({super.key});
@@ -87,6 +89,42 @@ class Status extends StatelessWidget {
                       : Container()
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                      flex: 5,
+                      child: Card(
+                          color: const Color.fromARGB(98, 75, 75, 75),
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return ListaLigas();
+                                },
+                              ))
+                            },
+                            child: SizedBox(
+                                height: 100,
+                                child: Stack(children: [
+                                  Image.network(
+                                    "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2021/08/17/16291886670895.jpg",
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                  const Center(
+                                    child: Text("PARTIDOS ESPORT",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: "super_punch",
+                                            fontSize: 35)),
+                                  ),
+                                ])),
+                          )))
+                ],
+              )
             ],
           ));
         } else {
