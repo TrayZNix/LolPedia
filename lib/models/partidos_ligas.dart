@@ -14,7 +14,7 @@ class ScheduleData {
 
 class Schedule {
   final Pages? pages;
-  final List<Event>? events;
+  late final List<Event>? events;
 
   Schedule({this.pages, this.events});
 

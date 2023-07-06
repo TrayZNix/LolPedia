@@ -1,7 +1,7 @@
 name: lol_pedia
 description: A new Flutter project.
 publish_to: "none"
-version: 1.0.2+2
+version: 1.0.3+3
 
 environment:
   sdk: ">=3.0.0-204.0.dev <4.0.0"
@@ -29,6 +29,7 @@ dependencies:
   rename: ^2.1.1
   animations: ^2.0.7
   flutter_staggered_animations: ^1.1.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
