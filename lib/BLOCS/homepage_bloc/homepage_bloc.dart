@@ -3,12 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
+import 'package:lol_pedia/repositories/esport_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'dart:math';
 
 import '../../models/champion.dart';
+import '../../models/leagues.dart';
 
 part 'homepage_event.dart';
 part 'homepage_state.dart';
@@ -27,7 +28,12 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
       cargarCampeones,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<LoadLigas>(
+      loadLigas,
+      transformer: throttleDroppable(throttleDuration),
+    );
     on<FilterLoadedChampions>(filtrarCampeones);
+    on<FilterLoadedLigas>(filtrarLigas);
   }
 
   Future<void> cargarCampeones(
@@ -50,6 +56,34 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
       status: HomepageStatus.success,
       champions: champs,
       filteredChamps: champs
+          .where((element) =>
+              element.name.toLowerCase().contains(filter.toLowerCase()))
+          .toList(),
+    ));
+  }
+
+  Future<void> loadLigas(LoadLigas event, Emitter<HomepageState> emit) async {
+    emit(HomepageLoading());
+    EsportRepository repo = GetIt.I.get<EsportRepository>();
+    Leagues? leagues = await repo.getLeagues();
+
+    emit(LeagueState(
+      filteredLeagues: leagues?.data.leagues ?? [],
+      leagues: leagues?.data.leagues ?? [],
+      status: HomepageStatus.success,
+      loading: false,
+    ));
+  }
+
+  Future<void> filtrarLigas(
+      FilterLoadedLigas event, Emitter<HomepageState> emit) async {
+    emit(HomepageLoading());
+    EsportRepository repo = GetIt.I.get<EsportRepository>();
+    Leagues leagues = await repo.getLeagues();
+    emit(LeagueState().copyWith(
+      status: HomepageStatus.success,
+      leagues: leagues.data.leagues,
+      filteredLeagues: leagues.data.leagues
           .where((element) =>
               element.name.toLowerCase().contains(filter.toLowerCase()))
           .toList(),

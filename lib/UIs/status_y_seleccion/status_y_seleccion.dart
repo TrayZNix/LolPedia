@@ -22,7 +22,6 @@ class Status extends StatelessWidget {
     return BlocBuilder<StatusBloc, StatusState>(
       bloc: StatusBloc()..add(LoadStatus()),
       builder: (context, state) {
-        print(state);
         if (state is StatusLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -89,46 +88,10 @@ class Status extends StatelessWidget {
                       : Container()
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 5,
-                      child: Card(
-                          color: const Color.fromARGB(98, 75, 75, 75),
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return ListaLigas();
-                                },
-                              ))
-                            },
-                            child: SizedBox(
-                                height: 100,
-                                child: Stack(children: [
-                                  Image.network(
-                                    "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2021/08/17/16291886670895.jpg",
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                  const Center(
-                                    child: Text("PARTIDOS ESPORT",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "super_punch",
-                                            fontSize: 35)),
-                                  ),
-                                ])),
-                          )))
-                ],
-              )
             ],
           ));
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

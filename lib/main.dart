@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:lol_pedia/UIs/status_y_seleccion/status_y_seleccion.dart';
@@ -25,9 +26,15 @@ class Aplicacion extends StatefulWidget {
   Aplicacion({super.key});
   final HomepageBloc bloc = HomepageBloc();
   int currentIndex = 0;
+
   void filtrarCampeones(String filtro) {
     bloc.filter = filtro;
     bloc.add(FilterLoadedChampions());
+  }
+
+  void filtrarLigas(String filtro) {
+    bloc.filter = filtro;
+    bloc.add(FilterLoadedLigas());
   }
 
   @override
@@ -45,21 +52,23 @@ class AplicacionState extends State<Aplicacion> {
   Widget build(BuildContext context) {
     widget.bloc.add(LoadChampions());
     PreferredSizeWidget appBar;
-    if (widget.currentIndex == 0) {
+    if (widget.currentIndex == 0 || widget.currentIndex == 2) {
       appBar = AppBarConBusqueda(
         bloc: widget.bloc,
-        filtrarCampeones: widget.filtrarCampeones,
+        funcionFiltrado: widget.currentIndex == 0
+            ? widget.filtrarCampeones
+            : widget.filtrarLigas,
+        placeholderText: widget.currentIndex == 0
+            ? "Nombre de campeón"
+            : "Nombre de la liga",
+        integratedSearch: true,
       );
     } else {
-      appBar = AppBar(
-        backgroundColor: Colors.black,
-        title: const Row(children: [
-          Text(
-            "LOLPEDIA",
-            style: TextStyle(fontFamily: "super_punch", fontSize: 40),
-          )
-        ]),
-        centerTitle: true,
+      appBar = AppBarConBusqueda(
+        bloc: widget.bloc,
+        funcionFiltrado: null,
+        placeholderText: "",
+        integratedSearch: false,
       );
     }
 
@@ -73,7 +82,11 @@ class AplicacionState extends State<Aplicacion> {
             ? Homepage(
                 bloc: widget.bloc,
               )
-            : StatusYSeleccion(),
+            : widget.currentIndex == 1
+                ? const StatusYSeleccion()
+                : ListaLigas(
+                    bloc: widget.bloc,
+                  ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: widget.currentIndex,
           onTap: (index) {
@@ -89,7 +102,9 @@ class AplicacionState extends State<Aplicacion> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.info_outline_rounded), label: "Campeones"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.leaderboard_rounded), label: "Online")
+                icon: Icon(Icons.leaderboard_rounded), label: "Online"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.videogame_asset_rounded), label: "Esport")
           ],
         ),
       ),

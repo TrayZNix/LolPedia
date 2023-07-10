@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,8 +13,10 @@ import '../../models/partidos_ligas.dart';
 
 class PartidosLiga extends StatefulWidget {
   final String idLiga;
+  final String nombreLiga;
 
-  const PartidosLiga({Key? key, required this.idLiga}) : super(key: key);
+  const PartidosLiga({Key? key, required this.idLiga, required this.nombreLiga})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PartidosLigaState();
@@ -51,13 +55,44 @@ class PartidosLigaState extends State<PartidosLiga> {
     return Scaffold(
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          "LOLPEDIA",
-          style: TextStyle(fontFamily: "super_punch", fontSize: 40),
-        ),
-        centerTitle: true,
-      ),
+          backgroundColor: Colors.black,
+          title: Row(
+            children: [
+              const Text(
+                "LOLPEDIA",
+                style: TextStyle(fontFamily: "super_punch", fontSize: 40),
+              ),
+              const Spacer(),
+              SizedBox(
+                height: 45,
+                child: VerticalDivider(
+                  color: Colors.white,
+                ),
+              ),
+              const Spacer(),
+              Flexible(
+                flex: 9,
+                child: Center(
+                  child: FittedBox(
+                    child: Text(
+                      utf8.decode(widget.nombreLiga.runes.toList()),
+                      softWrap: true,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          centerTitle: true,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(4.0),
+            child: Container(
+              color: Colors.orange,
+              height: 4.0,
+            ),
+          )),
       floatingActionButton: matchInProgressIndex != null
           ? FloatingActionButton(
               backgroundColor: Colors.white,
@@ -102,6 +137,7 @@ class PartidosLigaState extends State<PartidosLiga> {
                 final formattedDate = DateFormat('dd-MM-yyyy - HH:mm').format(
                     DateTime.parse(eventos[reverseIndex].startTime ?? ""));
                 var fechaAMostrar = "";
+
                 if (fechaPartido.year == hoy.year &&
                     fechaPartido.month == hoy.month &&
                     fechaPartido.day == hoy.day) {

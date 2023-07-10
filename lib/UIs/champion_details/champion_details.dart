@@ -20,13 +20,19 @@ class ChampionDetails extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: const Text(
-            "LOLPEDIA",
-            style: TextStyle(fontFamily: "super_punch", fontSize: 40),
-          ),
-          centerTitle: true,
-        ),
+            backgroundColor: Colors.black,
+            title: const Text(
+              "LOLPEDIA",
+              style: TextStyle(fontFamily: "super_punch", fontSize: 40),
+            ),
+            centerTitle: true,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(4.0),
+              child: Container(
+                color: Colors.orange,
+                height: 4.0,
+              ),
+            )),
         body: BlocBuilder<ChampionDetailsBloc, ChampionDetailsState>(
             bloc: ChampionDetailsBloc(championName)..add(LoadChampionDetails()),
             builder: (context, state) {

@@ -5,10 +5,16 @@ import '../BLOCS/homepage_bloc/homepage_bloc.dart';
 
 //ignore: must_be_immutable
 class AppBarConBusqueda extends StatefulWidget implements PreferredSizeWidget {
-  final ValueChanged<String> filtrarCampeones;
+  final ValueChanged<String>? funcionFiltrado;
   AppBarConBusqueda(
-      {super.key, required this.bloc, required this.filtrarCampeones});
+      {super.key,
+      required this.bloc,
+      required this.placeholderText,
+      this.funcionFiltrado,
+      required this.integratedSearch});
   final HomepageBloc bloc;
+  late bool integratedSearch = false;
+  final String placeholderText;
   var estaBuscando = false;
 
   @override
@@ -47,20 +53,28 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                   "LOLPEDIA",
                   style: TextStyle(fontFamily: "super_punch", fontSize: 40),
                 ),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.estaBuscando = !widget.estaBuscando;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ))
+                widget.integratedSearch
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.estaBuscando = !widget.estaBuscando;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ))
+                    : Container()
               ],
             ),
             centerTitle: true,
-          )
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(4.0),
+              child: Container(
+                color: Colors.orange,
+                height: 4.0,
+              ),
+            ))
         : AppBar(
             backgroundColor: Colors.black,
             title: Row(
@@ -69,7 +83,9 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                   flex: 10,
                   child: TextField(
                     onChanged: (value) {
-                      widget.filtrarCampeones(controller.text);
+                      if (widget.funcionFiltrado != null) {
+                        widget.funcionFiltrado!(controller.text);
+                      }
                     },
                     controller: controller,
                     focusNode: myFocusNode,
@@ -81,7 +97,7 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                             borderSide: BorderSide(color: Colors.white)),
                         prefixIcon:
                             const Icon(Icons.search, color: Colors.white),
-                        hintText: "Nombre de campeón",
+                        hintText: widget.placeholderText,
                         labelStyle:
                             GoogleFonts.anekDevanagari(color: Colors.white),
                         errorStyle:
@@ -96,7 +112,9 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
                 ),
                 IconButton(
                     onPressed: () {
-                      widget.filtrarCampeones("");
+                      if (widget.funcionFiltrado != null) {
+                        widget.funcionFiltrado!("");
+                      }
                       setState(() {
                         widget.estaBuscando = !widget.estaBuscando;
                       });
@@ -108,6 +126,12 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
               ],
             ),
             centerTitle: true,
-          );
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(4.0),
+              child: Container(
+                color: Colors.orange,
+                height: 4.0,
+              ),
+            ));
   }
 }
