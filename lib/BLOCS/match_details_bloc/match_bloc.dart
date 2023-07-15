@@ -1,0 +1,45 @@
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
+import 'package:lol_pedia/repositories/esport_repository.dart';
+
+import 'package:stream_transform/stream_transform.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+
+import '../../UIs/match_details/match_details.dart';
+import '../../models/match_details.dart';
+
+part 'match_event.dart';
+part 'match_state.dart';
+
+const throttleDuration = Duration(milliseconds: 100);
+
+EventTransformer<E> throttleDroppable<E>(Duration duration) {
+  return (events, mapper) {
+    return droppable<E>().call(events.throttle(duration), mapper);
+  };
+}
+
+class MatchBloc extends Bloc<MatchEvent, MatchState> {
+  final String matchId;
+
+  MatchBloc(this.matchId) : super(MatchInitial()) {
+    on<LoadMatchDetailsEvent>(
+      cargarDetallesPartido,
+      transformer: throttleDroppable(throttleDuration),
+    );
+  }
+
+  Future<void> cargarDetallesPartido(
+      LoadMatchDetailsEvent event, Emitter<MatchState> emit) async {
+    emit(MatchLoading());
+    try {
+      MatchDetails details =
+          await GetIt.I.get<EsportRepository>().getMatchDetails(matchId);
+      emit(const MatchDetailsState()
+          .copyWith(matchDetails: details, loaded: true));
+    } catch (_) {
+      emit(MatchLoadFail());
+    }
+  }
+}
