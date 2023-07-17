@@ -6,7 +6,7 @@ import 'package:lol_pedia/repositories/esport_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-import '../../UIs/match_details/match_details.dart';
+import '../../UIs/match_details/match_details_page.dart';
 import '../../models/match_details.dart';
 
 part 'match_event.dart';

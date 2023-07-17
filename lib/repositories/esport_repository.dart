@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:lol_pedia/UIs/match_details/match_details.dart';
+import 'package:lol_pedia/UIs/match_details/match_details_page.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/models/leagues.dart';
 import 'package:lol_pedia/models/partidos_ligas.dart';

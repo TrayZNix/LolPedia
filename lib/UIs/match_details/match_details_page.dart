@@ -101,10 +101,9 @@ class MatchDetailsPage extends StatelessWidget {
                             ),
                             const SizedBox(
                               height: 150,
-                              child: Expanded(
-                                  child: VerticalDivider(
+                              child: VerticalDivider(
                                 color: Colors.white,
-                              )),
+                              ),
                             ),
                             Expanded(
                               flex: 4,

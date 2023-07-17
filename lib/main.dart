@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
-import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:lol_pedia/UIs/status_y_seleccion/status_y_seleccion.dart';
 import 'package:lol_pedia/widgets/app_bar_con_busqueda.dart';
 import 'BLOCS/homepage_bloc/homepage_bloc.dart';
