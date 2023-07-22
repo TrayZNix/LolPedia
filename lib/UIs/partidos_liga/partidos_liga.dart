@@ -98,7 +98,9 @@ class PartidosLigaState extends State<PartidosLiga> {
       ),
       floatingActionButton: matchInProgressIndex != null
           ? FloatingbuttonIP(
-              matchInProgressIndex: matchInProgressIndex ?? 0,
+              matchInProgressIndex: ((((matchInProgressIndex ?? 0) - 1) > 0)
+                  ? (matchInProgressIndex ?? 0) - 1
+                  : matchInProgressIndex)!,
               matchScrollController: matchScrollController,
             )
           : null,
@@ -229,7 +231,9 @@ class PartidosLigaState extends State<PartidosLiga> {
                                                   .width /
                                               2,
                                         ),
-                                        AddNotification()
+                                        if (eventos[reverseIndex].state ==
+                                            'unstarted')
+                                          AddNotification()
                                       ],
                                     ),
                                   ),
