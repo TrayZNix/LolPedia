@@ -68,8 +68,8 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     Leagues? leagues = await repo.getLeagues();
 
     emit(LeagueState(
-      filteredLeagues: leagues?.data.leagues ?? [],
-      leagues: leagues?.data.leagues ?? [],
+      filteredLeagues: leagues.data.leagues,
+      leagues: leagues.data.leagues,
       status: HomepageStatus.success,
       loading: false,
     ));

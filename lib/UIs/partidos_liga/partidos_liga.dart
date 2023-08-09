@@ -2,14 +2,18 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/UIs/match_details/match_details_page.dart';
-import 'package:lol_pedia/models/leagues.dart';
+import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/repositories/esport_repository.dart';
+import 'package:lol_pedia/services/notifications_service.dart';
 import 'package:lol_pedia/widgets/recording_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+// ignore: depend_on_referenced_packages
+import 'package:timezone/timezone.dart' as tz;
 
 import '../../models/partidos_ligas.dart';
 
@@ -17,7 +21,7 @@ class PartidosLiga extends StatefulWidget {
   final String idLiga;
   final String nombreLiga;
 
-  PartidosLiga({Key? key, required this.idLiga, required this.nombreLiga})
+  const PartidosLiga({Key? key, required this.idLiga, required this.nombreLiga})
       : super(key: key);
 
   @override
@@ -98,8 +102,8 @@ class PartidosLigaState extends State<PartidosLiga> {
       ),
       floatingActionButton: matchInProgressIndex != null
           ? FloatingbuttonIP(
-              matchInProgressIndex: ((((matchInProgressIndex ?? 0) - 1) > 0)
-                  ? (matchInProgressIndex ?? 0) - 1
+              matchInProgressIndex: ((((matchInProgressIndex ?? 0) - 2) > 0)
+                  ? (matchInProgressIndex ?? 0) - 2
                   : matchInProgressIndex)!,
               matchScrollController: matchScrollController,
             )
@@ -109,6 +113,8 @@ class PartidosLigaState extends State<PartidosLiga> {
         child: FutureBuilder<ScheduleData>(
           future: leaguesFuture,
           builder: (context, snapshot) {
+            DynamicGeneralVariables generalVariables =
+                GetIt.I.get<DynamicGeneralVariables>();
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Muestra el spinner circular mientras se carga
               return const Center(
@@ -127,26 +133,31 @@ class PartidosLigaState extends State<PartidosLiga> {
                 itemCount: eventos.length,
                 itemBuilder: (context, index) {
                   final reverseIndex = eventos.length - 1 - index;
-                  final hoy = DateTime.now();
-                  final manana = DateTime.now().add(const Duration(days: 1));
+                  final hoy = DateTime.now().toUtc();
+                  final manana =
+                      DateTime.now().toUtc().add(const Duration(days: 1));
                   final fechaPartido =
-                      DateTime.parse(eventos[reverseIndex].startTime ?? "");
-                  final formattedDate = DateFormat('dd-MM-yyyy - HH:mm').format(
-                      DateTime.parse(eventos[reverseIndex].startTime ?? ""));
+                      DateTime.parse(eventos[reverseIndex].startTime ?? "")
+                          .toUtc();
                   var fechaAMostrar = "";
+                  tz.TZDateTime tzDateTime = tz.TZDateTime.from(
+                    DateTime.parse(fechaPartido.toString()),
+                    tz.getLocation(generalVariables.timeZoneName),
+                  );
 
-                  if (fechaPartido.year == hoy.year &&
-                      fechaPartido.month == hoy.month &&
-                      fechaPartido.day == hoy.day) {
+                  if (tzDateTime.year == hoy.year &&
+                      tzDateTime.month == hoy.month &&
+                      tzDateTime.day == hoy.day) {
                     fechaAMostrar =
-                        "Hoy - ${fechaPartido.hour}:${fechaPartido.minute < 10 ? '0${fechaPartido.minute}' : fechaPartido.minute}";
-                  } else if (fechaPartido.year == manana.year &&
-                      fechaPartido.month == manana.month &&
-                      fechaPartido.day == manana.day) {
+                        "Hoy - ${tzDateTime.hour}:${tzDateTime.minute < 10 ? '0${tzDateTime.minute}' : tzDateTime.minute}";
+                  } else if (tzDateTime.year == manana.year &&
+                      tzDateTime.month == manana.month &&
+                      tzDateTime.day == manana.day) {
                     fechaAMostrar =
-                        "Mañana - ${fechaPartido.hour}:${fechaPartido.minute < 10 ? '0${fechaPartido.minute}' : fechaPartido.minute}";
+                        "Mañana - ${tzDateTime.hour}:${tzDateTime.minute < 10 ? '0${tzDateTime.minute}' : tzDateTime.minute}";
                   } else {
-                    fechaAMostrar = formattedDate;
+                    fechaAMostrar =
+                        DateFormat('dd-MM-yyyy - HH:mm').format(tzDateTime);
                   }
                   if (eventos[reverseIndex].type.toString() == "match") {
                     return InkWell(
@@ -233,7 +244,34 @@ class PartidosLigaState extends State<PartidosLiga> {
                                         ),
                                         if (eventos[reverseIndex].state ==
                                             'unstarted')
-                                          AddNotification()
+                                          AddNotification(
+                                            matchId: (BigInt.parse(
+                                                    eventos[reverseIndex]
+                                                            .match
+                                                            ?.id ??
+                                                        ""))
+                                                .toInt(),
+                                            team1: eventos[reverseIndex]
+                                                    .match
+                                                    ?.teams
+                                                    ?.first
+                                                    .code ??
+                                                "",
+                                            team2: eventos[reverseIndex]
+                                                    .match
+                                                    ?.teams
+                                                    ?.last
+                                                    .code ??
+                                                "",
+                                            partido: eventos[reverseIndex]
+                                                    .blockName ??
+                                                "",
+                                            liga: eventos[reverseIndex]
+                                                    .league!
+                                                    .name ??
+                                                "",
+                                            fechaPartido: tzDateTime,
+                                          )
                                       ],
                                     ),
                                   ),
@@ -497,8 +535,23 @@ class FloatingbuttonIPState extends State<FloatingbuttonIP> {
   }
 }
 
+// ignore: must_be_immutable
 class AddNotification extends StatefulWidget {
-  const AddNotification({super.key});
+  String team1;
+  String team2;
+  String partido;
+  String liga;
+  int matchId;
+  bool notificationPlaced = false;
+  tz.TZDateTime fechaPartido;
+  AddNotification(
+      {super.key,
+      required this.team1,
+      required this.team2,
+      required this.partido,
+      required this.liga,
+      required this.matchId,
+      required this.fechaPartido});
 
   @override
   State<StatefulWidget> createState() => AddNotificationState();
@@ -506,17 +559,56 @@ class AddNotification extends StatefulWidget {
 
 class AddNotificationState extends State<AddNotification> {
   @override
+  void initState() {
+    super.initState();
+    NotificationService().checkNotificationExists(widget.matchId).then((value) {
+      setState(() {
+        widget.notificationPlaced = value;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      splashFactory: NoSplash.splashFactory,
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        if (!widget.notificationPlaced) {
+          NotificationService().showNotification(widget.matchId, widget.team1,
+              widget.team2, widget.partido, widget.liga, widget.fechaPartido);
+        } else {
+          NotificationService().cancelNotification(widget.matchId);
+        }
+        setState(() {
+          widget.notificationPlaced = !widget.notificationPlaced;
+        });
+      },
       child: Container(
         width: 50,
         height: 50,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: ((!widget.notificationPlaced)
+                  ? Colors.white
+                  : Colors.orange[600])!,
+              spreadRadius: 2,
+              blurRadius: 8,
+            ),
+          ],
+          color:
+              (!widget.notificationPlaced) ? Colors.white : Colors.orange[600],
         ),
-        child: const Icon(Icons.notifications_rounded),
+        child: Icon((widget.notificationPlaced)
+            ? Icons.notifications_off_rounded
+            : Icons.notifications_rounded),
       ),
     );
   }

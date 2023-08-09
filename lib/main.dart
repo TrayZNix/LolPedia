@@ -2,21 +2,31 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/UIs/status_y_seleccion/status_y_seleccion.dart';
+import 'package:lol_pedia/services/notifications_service.dart';
 import 'package:lol_pedia/widgets/app_bar_con_busqueda.dart';
 import 'BLOCS/homepage_bloc/homepage_bloc.dart';
 import 'config/locator.dart';
 import 'UIs/homepage/Homepage.dart';
 import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
+import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones();
+
   await configureDependencies();
   setupAsyncDependencies();
   await setGeneralVariables();
+
+  await NotificationService().initNotifications();
   runApp(Aplicacion());
 }
 
@@ -121,6 +131,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 setGeneralVariables() async {
+  tz.initializeTimeZones();
   DynamicGeneralVariables vars = GetIt.I.get<DynamicGeneralVariables>();
   List<String> versiones = [];
   final response = await http
@@ -134,4 +145,5 @@ setGeneralVariables() async {
 
   vars.versionList = versiones;
   vars.versionActual = versiones.first.toString();
+  vars.timeZoneName = await FlutterTimezone.getLocalTimezone();
 }
