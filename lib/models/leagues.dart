@@ -102,12 +102,13 @@ class DisplayPriority {
       };
 }
 
-enum Status { SELECTED, NOT_SELECTED, HIDDEN }
+enum Status { FORCE_SELECTED, SELECTED, NOT_SELECTED, HIDDEN }
 
 final statusValues = EnumValues({
   "hidden": Status.HIDDEN,
   "not_selected": Status.NOT_SELECTED,
-  "selected": Status.SELECTED
+  "selected": Status.SELECTED,
+  "force_selected": Status.FORCE_SELECTED,
 });
 
 class EnumValues<T> {

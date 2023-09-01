@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
@@ -19,7 +18,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   tz.initializeTimeZones();
 
   await configureDependencies();
@@ -145,5 +143,6 @@ setGeneralVariables() async {
 
   vars.versionList = versiones;
   vars.versionActual = versiones.first.toString();
-  vars.timeZoneName = await FlutterTimezone.getLocalTimezone();
+  vars.timeZoneName = await DateTime.now().timeZoneOffset;
+  print(vars.timeZoneName);
 }

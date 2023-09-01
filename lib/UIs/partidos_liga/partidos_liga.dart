@@ -142,8 +142,8 @@ class PartidosLigaState extends State<PartidosLiga> {
                   var fechaAMostrar = "";
                   tz.TZDateTime tzDateTime = tz.TZDateTime.from(
                     DateTime.parse(fechaPartido.toString()),
-                    tz.getLocation(generalVariables.timeZoneName),
-                  );
+                    tz.getLocation("UTC"),
+                  ).add(generalVariables.timeZoneName);
 
                   if (tzDateTime.year == hoy.year &&
                       tzDateTime.month == hoy.month &&
