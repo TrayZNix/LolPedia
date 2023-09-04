@@ -580,8 +580,14 @@ class AddNotificationState extends State<AddNotification> {
       onTap: () {
         HapticFeedback.mediumImpact();
         if (!widget.notificationPlaced) {
-          NotificationService().showNotification(widget.matchId, widget.team1,
-              widget.team2, widget.partido, widget.liga, widget.fechaPartido);
+          NotificationService().showNotification(
+              widget.matchId,
+              widget.team1,
+              widget.team2,
+              widget.partido,
+              widget.liga,
+              widget.fechaPartido.subtract(
+                  GetIt.I.get<DynamicGeneralVariables>().timeZoneName));
         } else {
           NotificationService().cancelNotification(widget.matchId);
         }
