@@ -55,11 +55,7 @@ class DataDragonRepository {
       if (response.statusCode != 200) return null;
       final jsonMap = json.decode(response.body) as Map<String, dynamic>;
       LeagueStatusResponse status = LeagueStatusResponse.fromJson(jsonMap);
-      if (status.incidents!.isEmpty) {
-        return null;
-      } else {
-        return status;
-      }
+      return status;
     } catch (error) {
       if (kDebugMode) {
         print(error);

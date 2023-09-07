@@ -109,7 +109,7 @@ class AplicacionState extends State<Aplicacion> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.info_outline_rounded), label: "Campeones"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.leaderboard_rounded), label: "Online"),
+                icon: Icon(Icons.leaderboard_rounded), label: "Estado"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.videogame_asset_rounded), label: "Esport")
           ],
@@ -143,6 +143,5 @@ setGeneralVariables() async {
 
   vars.versionList = versiones;
   vars.versionActual = versiones.first.toString();
-  vars.timeZoneName = await DateTime.now().timeZoneOffset;
-  print(vars.timeZoneName);
+  vars.timeZoneName = DateTime.now().timeZoneOffset;
 }
