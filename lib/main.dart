@@ -143,5 +143,5 @@ setGeneralVariables() async {
 
   vars.versionList = versiones;
   vars.versionActual = versiones.first.toString();
-  vars.timeZoneName = DateTime.now().timeZoneOffset;
+  vars.timeZoneOffset = DateTime.now().timeZoneOffset;
 }

@@ -1,7 +1,7 @@
 name: lol_pedia
 description: A new Flutter project.
 publish_to: "none"
-version: 1.0.8+11
+version: 1.0.9+12
 
 environment:
   sdk: ">=3.0.0-204.0.dev <4.0.0"

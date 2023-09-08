@@ -143,7 +143,7 @@ class PartidosLigaState extends State<PartidosLiga> {
                   tz.TZDateTime tzDateTime = tz.TZDateTime.from(
                     DateTime.parse(fechaPartido.toString()),
                     tz.getLocation("UTC"),
-                  ).add(generalVariables.timeZoneName);
+                  ).add(generalVariables.timeZoneOffset);
 
                   if (tzDateTime.year == hoy.year &&
                       tzDateTime.month == hoy.month &&
@@ -587,7 +587,7 @@ class AddNotificationState extends State<AddNotification> {
               widget.partido,
               widget.liga,
               widget.fechaPartido.subtract(
-                  GetIt.I.get<DynamicGeneralVariables>().timeZoneName));
+                  GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset));
         } else {
           NotificationService().cancelNotification(widget.matchId);
         }

@@ -52,6 +52,8 @@ class DataDragonRepository {
       final response = await http.get(
           Uri.parse("$riotApiUrl/status/v4/platform-data"),
           headers: {"X-Riot-Token": riotDeveloperKey.key});
+      // Uri.parse(
+      //     "https://7a681f18-2e78-458b-a034-f4176fe4b0ab.mock.pstmn.io/status"));
       if (response.statusCode != 200) return null;
       final jsonMap = json.decode(response.body) as Map<String, dynamic>;
       LeagueStatusResponse status = LeagueStatusResponse.fromJson(jsonMap);

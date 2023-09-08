@@ -1,11 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/models/league_status_response.dart';
-
+import 'package:timezone/timezone.dart' as tz;
 import '../../BLOCS/status_seleccion_bloc/status_bloc.dart';
 
 class StatusYSeleccion extends StatelessWidget {
@@ -13,25 +16,38 @@ class StatusYSeleccion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [WidgetDeReportes()],
+    StatusBloc bloc = StatusBloc()..add(LoadStatus());
+    return RefreshIndicator(
+      onRefresh: () async => {bloc.add(LoadStatus())},
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse}),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [WidgetDeReportes(bloc: bloc)],
+          ),
+        ),
       ),
     );
   }
 }
 
 class WidgetDeReportes extends StatelessWidget {
-  const WidgetDeReportes({super.key});
+  StatusBloc bloc;
+  WidgetDeReportes({super.key, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StatusBloc, StatusState>(
-      bloc: StatusBloc()..add(LoadStatus()),
+      bloc: bloc,
       builder: (context, state) {
         if (state is StatusLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Padding(
+            padding: EdgeInsets.all(18.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
         if (state.loaded) {
@@ -41,7 +57,12 @@ class WidgetDeReportes extends StatelessWidget {
             widgetsMantenimientos: state.statusResponse?.maintenances ?? [],
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Padding(
+            padding: EdgeInsets.all(18.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );
@@ -69,9 +90,13 @@ class MenuSeleccionState extends State<MenuSeleccion> {
   List<Widget> widgetsMantenimientos = [];
   void changeDevice(String device) {
     setState(() {
-      widgetsIncidencias = [];
-      widgetsMantenimientos = [];
-      entorno = device;
+      if (entorno == device) {
+        entorno = "";
+      } else {
+        widgetsIncidencias = [];
+        widgetsMantenimientos = [];
+        entorno = device;
+      }
     });
   }
 
@@ -80,6 +105,10 @@ class MenuSeleccionState extends State<MenuSeleccion> {
     for (Incidents incidents in widget.widgetsIncidencias) {
       if (incidents.platforms.contains(entorno) || entorno == "") {
         String incidentTitle = incidents.titles!
+            .where((element) => element.locale == vars.lang)
+            .first
+            .content;
+        String incidentDescription = incidents.updates!.last.translations
             .where((element) => element.locale == vars.lang)
             .first
             .content;
@@ -147,23 +176,32 @@ class MenuSeleccionState extends State<MenuSeleccion> {
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Text(incidentTitle,
                       softWrap: true,
-                      maxLines: 3,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.anekDevanagari(
                           color: Colors.black,
                           fontSize: 13,
-                          fontWeight: FontWeight.bold)))
+                          fontWeight: FontWeight.bold))),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Text(incidentDescription,
+                      softWrap: true,
+                      style: GoogleFonts.anekDevanagari(
+                          color: Colors.black, fontSize: 12)))
             ],
           ),
         );
         widgetsIncidencias.add(widget);
       }
     }
-    for (Maintenances maintenances in widget.widgetsMantenimientos ?? []) {
+    for (Maintenances maintenances in widget.widgetsMantenimientos) {
       if (maintenances.platforms.contains(entorno) || entorno == "") {
+        String textoMant = "";
         String incidentTitle = maintenances.updates.last.translations
             .where((element) => element.locale == vars.lang)
             .first
             .content;
+        textoMant = incidentTitle;
         DateTime? updatedAt = maintenances.updates.last.updatedAt;
         Widget widget = Card(
           child: Column(
@@ -208,9 +246,10 @@ class MenuSeleccionState extends State<MenuSeleccion> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: Text(incidentTitle,
+                child: Text(textoMant,
                     softWrap: true,
                     maxLines: 3,
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.anekDevanagari(
                         color: Colors.black,
                         fontSize: 13,
@@ -226,7 +265,8 @@ class MenuSeleccionState extends State<MenuSeleccion> {
       child: Column(
         children: [
           SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 (widget.error)
