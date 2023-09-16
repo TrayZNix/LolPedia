@@ -5,9 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:lol_pedia/UIs/match_details/match_details_page.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/models/leagues.dart';
+import 'package:lol_pedia/models/match_data_details_interface.dart';
+import 'package:lol_pedia/models/match_data_window_interface.dart';
 import 'package:lol_pedia/models/partidos_ligas.dart';
 
-import '../models/match_details.dart';
+import '../models/match_details_interface.dart';
 
 class EsportRepository {
   static late EsportRepository _instance;
@@ -22,6 +24,7 @@ class EsportRepository {
   }
 
   String apiUrl = "https://prod-relapi.ewp.gg/persisted/gw";
+  String feedApiUrl = "https://feed.lolesports.com/livestats/v1";
 
   Future<Leagues> getLeagues() async {
     var response = await http.get(
@@ -41,12 +44,35 @@ class EsportRepository {
     return ScheduleData.fromJson(body);
   }
 
-  Future<MatchDetails> getMatchDetails(String matchId) async {
+  Future<MatchDataInterface> getMatchDetails(String matchId) async {
     var response = await http.get(
         Uri.parse(
             "$apiUrl/getEventDetails?hl=${riotDeveloperKey.lang.replaceAll("_", "-")}&id=$matchId"),
         headers: {"x-api-key": riotDeveloperKey.esportKey});
     var body = json.decode(response.body) as Map<String, dynamic>;
-    return MatchDetails.fromJson(body);
+    return MatchDataInterface.fromJson(body);
+  }
+
+  Future<MatchDetailsWindowInterface> getConcreteMatchDataWindow(
+      String id) async {
+    String date =
+        DateTime.now().toUtc().subtract(Duration(minutes: 1)).toIso8601String();
+    String finalString = "${date.substring(0, (date.lastIndexOf(".") - 1))}0Z";
+    var response = await http.get(
+        Uri.parse("$feedApiUrl/window/$id?startingTime=$finalString"),
+        headers: {"x-api-key": riotDeveloperKey.esportKey});
+    var body = json.decode(response.body) as Map<String, dynamic>;
+    return MatchDetailsWindowInterface.fromJson(body);
+  }
+
+  Future<MatchDetailsInterface> getConcreteMatchDetail(String id) async {
+    String date =
+        DateTime.now().toUtc().subtract(Duration(minutes: 1)).toIso8601String();
+    String finalString = "${date.substring(0, (date.lastIndexOf(".") - 1))}0Z";
+    var response = await http.get(
+        Uri.parse("$feedApiUrl/details/$id?startingTime=$finalString"),
+        headers: {"x-api-key": riotDeveloperKey.esportKey});
+    var body = json.decode(response.body) as Map<String, dynamic>;
+    return MatchDetailsInterface.fromJson(body);
   }
 }

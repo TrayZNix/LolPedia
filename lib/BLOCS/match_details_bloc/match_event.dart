@@ -7,4 +7,4 @@ abstract class MatchEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadMatchDetailsEvent extends MatchEvent {}
+class LoadMatchEvent extends MatchEvent {}

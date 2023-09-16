@@ -7,7 +7,7 @@ import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../UIs/match_details/match_details_page.dart';
-import '../../models/match_details.dart';
+import '../../models/match_details_interface.dart';
 
 part 'match_event.dart';
 part 'match_state.dart';
@@ -24,20 +24,20 @@ class MatchBloc extends Bloc<MatchEvent, MatchState> {
   final String matchId;
 
   MatchBloc(this.matchId) : super(MatchInitial()) {
-    on<LoadMatchDetailsEvent>(
+    on<LoadMatchEvent>(
       cargarDetallesPartido,
       transformer: throttleDroppable(throttleDuration),
     );
   }
 
   Future<void> cargarDetallesPartido(
-      LoadMatchDetailsEvent event, Emitter<MatchState> emit) async {
+      LoadMatchEvent event, Emitter<MatchState> emit) async {
     emit(MatchLoading());
     try {
-      MatchDetails details =
+      MatchDataInterface details =
           await GetIt.I.get<EsportRepository>().getMatchDetails(matchId);
-      emit(const MatchDetailsState()
-          .copyWith(matchDetails: details, loaded: true));
+      emit(
+          const MatchDataState().copyWith(matchDetails: details, loaded: true));
     } catch (_) {
       emit(MatchLoadFail());
     }

@@ -7,16 +7,16 @@ class MatchState extends Equatable {
   List<Object> get props => [];
 }
 
-class MatchDetailsState extends MatchState {
-  final MatchDetails? matchDetails;
+class MatchDataState extends MatchState {
+  final MatchDataInterface? matchDetails;
   final bool loaded;
-  const MatchDetailsState({this.loaded = false, this.matchDetails});
+  const MatchDataState({this.loaded = false, this.matchDetails});
 
   @override
   List<Object> get props => [matchDetails ?? "", loaded];
 
-  MatchDetailsState copyWith({MatchDetails? matchDetails, bool? loaded}) {
-    return MatchDetailsState(
+  MatchDataState copyWith({MatchDataInterface? matchDetails, bool? loaded}) {
+    return MatchDataState(
         matchDetails: matchDetails ?? this.matchDetails,
         loaded: loaded ?? this.loaded);
   }
