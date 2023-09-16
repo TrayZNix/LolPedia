@@ -46,11 +46,11 @@ class Maintenances {
     required this.platforms,
     required this.updatedAt,
   });
-  late final String archiveAt;
+  late final String? archiveAt;
   late final List<Titles> titles;
-  late final String maintenanceStatus;
+  late final String? maintenanceStatus;
   late final int id;
-  late final String createdAt;
+  late final String? createdAt;
   late final List<Updates> updates;
   late final String? incidentSeverity;
   late final List<String> platforms;

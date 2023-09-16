@@ -248,7 +248,7 @@ class MenuSeleccionState extends State<MenuSeleccion> {
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                 child: Text(textoMant,
                     softWrap: true,
-                    maxLines: 3,
+                    maxLines: 10,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.anekDevanagari(
                         color: Colors.black,
