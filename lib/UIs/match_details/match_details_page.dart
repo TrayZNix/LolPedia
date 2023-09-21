@@ -631,7 +631,7 @@ class MatchDataWidgetState extends State<MatchData> {
                           List<Widget> itemWidgetRow1 = [];
                           List<Widget> itemWidgetRow2 = [];
                           int skippedNumber = 0;
-                          for (var i = 0; i < 6; i++) {
+                          for (var i = 0; i < details.items.length; i++) {
                             int index = i + skippedNumber;
                             int valor = 0;
                             do {
@@ -644,21 +644,25 @@ class MatchDataWidgetState extends State<MatchData> {
                                 index++;
                                 skippedNumber++;
                               }
-                            } while (valor == 3340 ||
-                                valor == 3364 ||
-                                valor == 3363);
-                            Widget itemImage = CachedNetworkImage(
-                                height: 25,
-                                width: 25,
-                                fit: BoxFit.scaleDown,
-                                errorWidget: (context, url, error) {
-                                  return Container(color: Colors.transparent);
-                                },
-                                imageUrl:
-                                    "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png");
-                            (i) < 3
-                                ? itemWidgetRow1.add(itemImage)
-                                : itemWidgetRow2.add(itemImage);
+                            } while ((valor == 3340 ||
+                                    valor == 3364 ||
+                                    valor == 3363) &&
+                                index <= details.items.length);
+                            if (valor != 0) {
+                              Widget itemImage = CachedNetworkImage(
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.scaleDown,
+                                  errorWidget: (context, url, error) {
+                                    print(url);
+                                    return Container(color: Colors.transparent);
+                                  },
+                                  imageUrl:
+                                      "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png");
+                              (i) < 3
+                                  ? itemWidgetRow1.add(itemImage)
+                                  : itemWidgetRow2.add(itemImage);
+                            }
                           }
                           Widget itemWidget = Container(
                             decoration: BoxDecoration(
