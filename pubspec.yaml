@@ -32,7 +32,8 @@ dependencies:
   flutter_local_notifications: ^15.1.0+1
   permission_handler: ^10.4.3
   cached_network_image: ^3.2.3
-
+  url_launcher: ^6.1.14
+  font_awesome_flutter: ^10.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,6 +51,14 @@ flutter:
     - family: kenyan_coffee
       fonts:
         - asset: ./resources/fonts/kenyan coffee rg.otf
+  assets:
+    - assets/img/dragons/ocean.png
+    - assets/img/dragons/cloud.png
+    - assets/img/dragons/infernal.png
+    - assets/img/dragons/mountain.png
+    - assets/img/dragons/chemtech.png
+    - assets/img/dragons/hextech.png
+    - assets/img/dragons/elder.png
 flutter_icons:
   android: true
   ios: true

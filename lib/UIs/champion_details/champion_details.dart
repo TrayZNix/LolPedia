@@ -44,19 +44,19 @@ class ChampionDetails extends StatelessWidget {
               }
               if (state.status == ChampionDetailsStatus.success) {
                 List<String> listaSkins = [];
-                for (var element in state.champions!.skins) {
+                for (var element in state.champions?.skins ?? []) {
                   listaSkins.add(
                       "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${state.champions?.id}_${element.num}.jpg");
                 }
                 List<Widget> pasivaYHabilidadesWidget = List.generate(
-                  state.champions!.spells.length +
-                      1, // Agregar 1 para la habilidad pasiva
+                  state.champions?.spells.length ??
+                      0 + 1, // Agregar 1 para la habilidad pasiva
                   (index) {
                     String imageUrl;
                     String spellLetter = "";
                     if (index == 0) {
                       imageUrl =
-                          "http://ddragon.leagueoflegends.com/cdn/${riotDeveloperKey.versionActual}/img/passive/${state.champions!.passive!.image!.full}";
+                          "http://ddragon.leagueoflegends.com/cdn/${riotDeveloperKey.versionActual}/img/passive/${state.champions?.passive?.image?.full}";
                       spellLetter = "P";
                     } else {
                       imageUrl =
@@ -107,60 +107,63 @@ class ChampionDetails extends StatelessWidget {
                     );
                   },
                 );
-                return SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        CarouselImages(
-                          scaleFactor: 0.6,
-                          listImages: listaSkins,
-                          height: 200,
-                          borderRadius: 30.0,
-                          cachedNetworkImage: true,
-                          verticalAlignment: Alignment.topCenter,
-                        ),
-                        Positioned(
-                            bottom: 15,
-                            right: 45,
-                            child: Text(
-                              state.champions?.name ?? "",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontFamily: "super_punch",
-                                fontSize: 40,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.black,
-                                      offset: Offset(5, 5),
-                                      blurRadius: 6),
-                                  Shadow(
-                                      color: Colors.black,
-                                      offset: Offset(0, 0),
-                                      blurRadius: 6),
-                                ],
-                              ),
-                            ))
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Text(
-                        state.champions?.lore ?? "",
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.anekDevanagari(
-                          color: Colors.white,
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          CarouselImages(
+                            scaleFactor: 0.6,
+                            listImages: listaSkins,
+                            height: 200,
+                            borderRadius: 30.0,
+                            cachedNetworkImage: true,
+                            verticalAlignment: Alignment.topCenter,
+                          ),
+                          Positioned(
+                              bottom: 15,
+                              right: 45,
+                              child: Text(
+                                state.champions?.name ?? "",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "super_punch",
+                                  fontSize: 40,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        offset: Offset(5, 5),
+                                        blurRadius: 6),
+                                    Shadow(
+                                        color: Colors.black,
+                                        offset: Offset(0, 0),
+                                        blurRadius: 6),
+                                  ],
+                                ),
+                              ))
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Text(
+                          state.champions?.lore ?? "",
+                          textAlign: TextAlign.justify,
+                          style: GoogleFonts.anekDevanagari(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(25),
-                      child: Row(
-                        children: pasivaYHabilidadesWidget,
-                      ),
-                    )
-                  ],
-                ));
+                      Padding(
+                        padding: const EdgeInsets.all(25),
+                        child: Row(
+                          children: pasivaYHabilidadesWidget,
+                        ),
+                      )
+                    ],
+                  )),
+                );
               } else {
                 return const Text(
                   "Error loading the champions",

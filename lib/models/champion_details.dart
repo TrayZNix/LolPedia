@@ -39,7 +39,7 @@ class Data {
   Passive? passive;
   List<dynamic> recommended;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String?, dynamic> json) => Data(
         id: json["id"],
         key: json["key"],
         name: json["name"],
@@ -311,16 +311,22 @@ class Leveltip {
     required this.effect,
   });
 
-  List<String>? label;
-  List<String>? effect;
+  List<String?> label;
+  List<String?> effect;
 
-  factory Leveltip.fromJson(Map<String, dynamic> json) => Leveltip(
-        label: List<String>.from(json["label"].map((x) => x)),
-        effect: List<String>.from(json["effect"].map((x) => x)),
+  factory Leveltip.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return Leveltip(label: [], effect: []);
+    } else {
+      return Leveltip(
+        label: List<String?>.from(json["label"].map((x) => x)),
+        effect: List<String?>.from(json["effect"].map((x) => x)),
       );
+    }
+  }
 
   Map<String, dynamic> toJson() => {
-        "label": List<dynamic>.from(label!.map((x) => x)),
-        "effect": List<dynamic>.from(effect!.map((x) => x)),
+        "label": List<dynamic>.from(label.map((x) => x)),
+        "effect": List<dynamic>.from(effect.map((x) => x)),
       };
 }
