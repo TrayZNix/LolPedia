@@ -284,6 +284,7 @@ class MatchDetailsPage extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class MatchData extends StatefulWidget {
   int currentMatchPlayed;
   String matchId;
@@ -488,41 +489,68 @@ class MatchDataWidgetState extends State<MatchData> {
                                   element.participantId == part.participantId)
                               .first;
                           index++;
-
                           List<Widget> itemWidgetRow1 = [];
                           List<Widget> itemWidgetRow2 = [];
 
-                          int skippedNumber = 0;
-                          for (var i = 0; i < 6; i++) {
-                            int index = i + skippedNumber;
-                            int valor = 0;
-                            do {
-                              try {
-                                valor = details.items[index];
-                              } catch (_) {}
-                              if (valor == 3340 ||
-                                  valor == 3364 ||
-                                  valor == 3363) {
-                                index++;
-                                skippedNumber++;
+                          int controlWardsQuantity = details.items
+                              .where((element) => element == 2055)
+                              .length;
+                          if (controlWardsQuantity != 0) {
+                            details.items
+                                .removeWhere((element) => element == 2055);
+                            details.items.add(2055);
+                          }
+                          details.items.removeWhere((element) =>
+                              (element == 3364) ||
+                              (element == 3340) ||
+                              (element == 3363));
+                          for (var i = 0; i < details.items.length; i++) {
+                            int valor = details.items[i];
+                            if (valor != 0) {
+                              Widget itemImage = CachedNetworkImage(
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.scaleDown,
+                                  errorWidget: (context, url, error) {
+                                    return Container(color: Colors.transparent);
+                                  },
+                                  imageUrl:
+                                      "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png");
+                              if (valor == 2055) {
+                                itemImage = Stack(
+                                  fit: StackFit.passthrough,
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    CachedNetworkImage(
+                                        height: 25,
+                                        width: 25,
+                                        fit: BoxFit.scaleDown,
+                                        errorWidget: (context, url, error) {
+                                          return Container(
+                                              color: Colors.transparent);
+                                        },
+                                        imageUrl:
+                                            "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png"),
+                                    if (controlWardsQuantity > 1)
+                                      Padding(
+                                        padding: const EdgeInsets.all(0.0),
+                                        child: Text(
+                                          controlWardsQuantity.toString(),
+                                          style: GoogleFonts.anekDevanagari(
+                                              color: Colors.white,
+                                              fontSize: 13),
+                                        ),
+                                      ),
+                                  ],
+                                );
                               }
-                            } while (valor == 3340 ||
-                                valor == 3364 ||
-                                valor == 3363);
-                            Widget itemImage = CachedNetworkImage(
-                                height: 25,
-                                width: 25,
-                                fit: BoxFit.scaleDown,
-                                errorWidget: (context, url, error) {
-                                  return Container(color: Colors.transparent);
-                                },
-                                imageUrl:
-                                    "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png");
-                            (i) < 3
-                                ? itemWidgetRow1.add(itemImage)
-                                : itemWidgetRow2.add(itemImage);
+                              (i) < 3
+                                  ? itemWidgetRow1.add(itemImage)
+                                  : itemWidgetRow2.add(itemImage);
+                            }
                           }
                           Widget itemWidget = Container(
+                            height: 68,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
@@ -533,7 +561,7 @@ class MatchDataWidgetState extends State<MatchData> {
                             padding: EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -553,47 +581,56 @@ class MatchDataWidgetState extends State<MatchData> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CachedNetworkImage(
-                                      height: 45,
-                                      width: 45,
-                                      fit: BoxFit.scaleDown,
-                                      imageUrl:
-                                          "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/champion/${part.championId}.png"),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 0, 0, 0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              part.summonerName ?? "",
-                                              style: GoogleFonts.anekDevanagari(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(details.kills.toString()),
-                                            const Text("/"),
-                                            Text(details.deaths.toString()),
-                                            const Text("/"),
-                                            Text(details.assists.toString()),
-                                          ],
-                                        ),
-                                      ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                part.summonerName ?? "",
+                                                style:
+                                                    GoogleFonts.anekDevanagari(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(details.kills.toString()),
+                                              const Text("/"),
+                                              Text(details.deaths.toString()),
+                                              const Text("/"),
+                                              Text(details.assists.toString()),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: CachedNetworkImage(
+                                          height: 45,
+                                          width: 45,
+                                          fit: BoxFit.scaleDown,
+                                          imageUrl:
+                                              "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/champion/${part.championId}.png"),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -615,6 +652,16 @@ class MatchDataWidgetState extends State<MatchData> {
                                           : support.add(widget);
                         }
                         index = 0;
+
+                        Widget widget = const SizedBox(
+                            height: 125, child: VerticalDivider());
+
+                        topLane.add(widget);
+                        jlg.add(widget);
+                        mid.add(widget);
+                        bot.add(widget);
+                        support.add(widget);
+
                         for (ParticipantMetadata part in state
                                 .matchDetailsWindows
                                 ?.gameMetadata
@@ -626,45 +673,72 @@ class MatchDataWidgetState extends State<MatchData> {
                               .where((element) =>
                                   element.participantId == part.participantId)
                               .first;
+                          index++;
 
-                          int itemIndex = 0;
                           List<Widget> itemWidgetRow1 = [];
                           List<Widget> itemWidgetRow2 = [];
-                          int skippedNumber = 0;
+                          int controlWardsQuantity = details.items
+                              .where((element) => element == 2055)
+                              .length;
+                          if (controlWardsQuantity != 0) {
+                            details.items
+                                .removeWhere((element) => element == 2055);
+                            details.items.add(2055);
+                          }
+                          details.items.removeWhere((element) =>
+                              (element == 3364) ||
+                              (element == 3340) ||
+                              (element == 3363) ||
+                              (element == 2138) ||
+                              (element == 2139) ||
+                              (element == 2140));
                           for (var i = 0; i < details.items.length; i++) {
-                            int index = i + skippedNumber;
-                            int valor = 0;
-                            do {
-                              try {
-                                valor = details.items[index];
-                              } catch (_) {}
-                              if (valor == 3340 ||
-                                  valor == 3364 ||
-                                  valor == 3363) {
-                                index++;
-                                skippedNumber++;
-                              }
-                            } while ((valor == 3340 ||
-                                    valor == 3364 ||
-                                    valor == 3363) &&
-                                index <= details.items.length);
+                            int valor = details.items[i];
                             if (valor != 0) {
                               Widget itemImage = CachedNetworkImage(
                                   height: 25,
                                   width: 25,
                                   fit: BoxFit.scaleDown,
                                   errorWidget: (context, url, error) {
-                                    print(url);
                                     return Container(color: Colors.transparent);
                                   },
                                   imageUrl:
                                       "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png");
+                              if (valor == 2055) {
+                                itemImage = Stack(
+                                  fit: StackFit.passthrough,
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    CachedNetworkImage(
+                                        height: 25,
+                                        width: 25,
+                                        fit: BoxFit.scaleDown,
+                                        errorWidget: (context, url, error) {
+                                          return Container(
+                                              color: Colors.transparent);
+                                        },
+                                        imageUrl:
+                                            "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/item/${valor}.png"),
+                                    if (controlWardsQuantity > 1)
+                                      Padding(
+                                        padding: const EdgeInsets.all(0.0),
+                                        child: Text(
+                                          controlWardsQuantity.toString(),
+                                          style: GoogleFonts.anekDevanagari(
+                                              color: Colors.white,
+                                              fontSize: 13),
+                                        ),
+                                      ),
+                                  ],
+                                );
+                              }
                               (i) < 3
                                   ? itemWidgetRow1.add(itemImage)
                                   : itemWidgetRow2.add(itemImage);
                             }
                           }
                           Widget itemWidget = Container(
+                            height: 68,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
@@ -675,7 +749,7 @@ class MatchDataWidgetState extends State<MatchData> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -691,50 +765,56 @@ class MatchDataWidgetState extends State<MatchData> {
                             ),
                           );
 
-                          index++;
                           Widget widget = Column(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 6, 0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(part.summonerName ?? "",
-                                                style:
-                                                    GoogleFonts.anekDevanagari(
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(details.kills.toString()),
-                                            const Text("/"),
-                                            Text(details.deaths.toString()),
-                                            const Text("/"),
-                                            Text(details.assists.toString()),
-                                          ],
-                                        ),
-                                      ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                      child: CachedNetworkImage(
+                                          height: 45,
+                                          width: 45,
+                                          fit: BoxFit.scaleDown,
+                                          imageUrl:
+                                              "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/champion/${part.championId}.png"),
                                     ),
-                                  ),
-                                  CachedNetworkImage(
-                                      height: 45,
-                                      width: 45,
-                                      fit: BoxFit.scaleDown,
-                                      imageUrl:
-                                          "http://ddragon.leagueoflegends.com/cdn/${genVars.versionActual}/img/champion/${part.championId}.png"),
-                                ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 6, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(part.summonerName ?? "",
+                                                  style: GoogleFonts
+                                                      .anekDevanagari(
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(details.kills.toString()),
+                                              const Text("/"),
+                                              Text(details.deaths.toString()),
+                                              const Text("/"),
+                                              Text(details.assists.toString()),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -817,7 +897,7 @@ class MatchDataWidgetState extends State<MatchData> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: topLane,
                                       ),
                                     ),
@@ -833,7 +913,7 @@ class MatchDataWidgetState extends State<MatchData> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: jlg,
                                       ),
                                     ),
@@ -849,7 +929,7 @@ class MatchDataWidgetState extends State<MatchData> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: mid,
                                       ),
                                     ),
@@ -865,7 +945,7 @@ class MatchDataWidgetState extends State<MatchData> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: bot,
                                       ),
                                     ),
@@ -881,7 +961,7 @@ class MatchDataWidgetState extends State<MatchData> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: support,
                                       ),
                                     ),
