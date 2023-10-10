@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lol_pedia/BLOCS/lista_ligas_bloc/lista_ligas_bloc.dart';
 
 import '../../BLOCS/homepage_bloc/homepage_bloc.dart';
 import '../partidos_liga/partidos_liga.dart';
 
 class ListaLigas extends StatelessWidget {
-  ListaLigas({required this.bloc});
-  HomepageBloc bloc;
+  const ListaLigas({super.key, required this.bloc});
+  final HomepageBloc bloc;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomepageBloc, HomepageState>(

@@ -9,5 +9,5 @@
     "editor.formatOnType": true
   },
   "breadcrumbs.enabled": false,
-  "workbench.statusBar.visible": false
+  "workbench.statusBar.visible": true
 }

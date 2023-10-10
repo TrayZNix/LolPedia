@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_launcher_icons/custom_exceptions.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:lol_pedia/models/items_interface.dart';
 import 'package:lol_pedia/models/league_status_response.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 
@@ -52,8 +54,6 @@ class DataDragonRepository {
       final response = await http.get(
           Uri.parse("$riotApiUrl/status/v4/platform-data"),
           headers: {"X-Riot-Token": riotDeveloperKey.key});
-      // Uri.parse(
-      //     "https://7a681f18-2e78-458b-a034-f4176fe4b0ab.mock.pstmn.io/status"));
       if (response.statusCode != 200) return null;
       final jsonMap = json.decode(response.body) as Map<String, dynamic>;
       LeagueStatusResponse status = LeagueStatusResponse.fromJson(jsonMap);
@@ -64,5 +64,21 @@ class DataDragonRepository {
       }
     }
     return null;
+  }
+
+  Future<Items> getItems(String version) async {
+    late Items status;
+    try {
+      final response = await http.get(Uri.parse(
+          "$dataDragonUrl/$version/data/en_GB/item.json")); //Must be es_ES to extract data correctly
+      if (response.statusCode != 200) throw FileNotFoundException("Items.json");
+      final jsonMap = json.decode(response.body) as Map<String, dynamic>;
+      status = Items.fromJson(jsonMap);
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+    return status;
   }
 }

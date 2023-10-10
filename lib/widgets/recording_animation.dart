@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class RecordingIndicator extends StatefulWidget {
+  const RecordingIndicator({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _RecordingIndicatorState createState() => _RecordingIndicatorState();
 }
 
@@ -14,7 +17,7 @@ class _RecordingIndicatorState extends State<RecordingIndicator>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
   }
 
@@ -46,12 +49,14 @@ class _RecordingIndicatorState extends State<RecordingIndicator>
 }
 
 class MyFloatingActionButton extends StatelessWidget {
+  const MyFloatingActionButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Colors.white,
       onPressed: () {},
-      child: Stack(
+      child: const Stack(
         alignment: Alignment.center,
         children: [
           RecordingIndicator(),

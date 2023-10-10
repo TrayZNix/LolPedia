@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lol_pedia/repositories/esport_repository.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-import '../../UIs/match_details/match_details_page.dart';
 import '../../models/match_details_interface.dart';
 
 part 'match_event.dart';
@@ -38,7 +38,7 @@ class MatchBloc extends Bloc<MatchEvent, MatchState> {
           await GetIt.I.get<EsportRepository>().getMatchDetails(matchId);
       emit(
           const MatchDataState().copyWith(matchDetails: details, loaded: true));
-    } catch (_) {
+    } catch (e) {
       emit(MatchLoadFail());
     }
   }

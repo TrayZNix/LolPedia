@@ -18,12 +18,12 @@ class MatchDetailsWindowInterface {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['esportsGameId'] = esportsGameId;
-    _data['esportsMatchId'] = esportsMatchId;
-    _data['gameMetadata'] = gameMetadata.toJson();
-    _data['frames'] = frames.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['esportsGameId'] = esportsGameId;
+    data['esportsMatchId'] = esportsMatchId;
+    data['gameMetadata'] = gameMetadata.toJson();
+    data['frames'] = frames.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -44,11 +44,11 @@ class GameMetadata {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['patchVersion'] = patchVersion;
-    _data['blueTeamMetadata'] = blueTeamMetadata.toJson();
-    _data['redTeamMetadata'] = redTeamMetadata.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['patchVersion'] = patchVersion;
+    data['blueTeamMetadata'] = blueTeamMetadata.toJson();
+    data['redTeamMetadata'] = redTeamMetadata.toJson();
+    return data;
   }
 }
 
@@ -68,11 +68,11 @@ class BlueTeamMetadata {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['esportsTeamId'] = esportsTeamId;
-    _data['participantMetadata'] =
+    final data = <String, dynamic>{};
+    data['esportsTeamId'] = esportsTeamId;
+    data['participantMetadata'] =
         participantMetadata.map((e) => e.toJson()).toList();
-    return _data;
+    return data;
   }
 }
 
@@ -99,13 +99,13 @@ class ParticipantMetadata {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['participantId'] = participantId;
-    _data['esportsPlayerId'] = esportsPlayerId;
-    _data['summonerName'] = summonerName;
-    _data['championId'] = championId;
-    _data['role'] = role;
-    return _data;
+    final data = <String, dynamic>{};
+    data['participantId'] = participantId;
+    data['esportsPlayerId'] = esportsPlayerId;
+    data['summonerName'] = summonerName;
+    data['championId'] = championId;
+    data['role'] = role;
+    return data;
   }
 }
 
@@ -125,11 +125,11 @@ class RedTeamMetadata {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['esportsTeamId'] = esportsTeamId;
-    _data['participantMetadata'] =
+    final data = <String, dynamic>{};
+    data['esportsTeamId'] = esportsTeamId;
+    data['participantMetadata'] =
         participantMetadata.map((e) => e.toJson()).toList();
-    return _data;
+    return data;
   }
 }
 
@@ -153,12 +153,12 @@ class Frames {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['rfc460Timestamp'] = rfc460Timestamp;
-    _data['gameState'] = gameState;
-    _data['blueTeam'] = blueTeam.toJson();
-    _data['redTeam'] = redTeam.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['rfc460Timestamp'] = rfc460Timestamp;
+    data['gameState'] = gameState;
+    data['blueTeam'] = blueTeam.toJson();
+    data['redTeam'] = redTeam.toJson();
+    return data;
   }
 }
 
@@ -193,15 +193,15 @@ class BlueTeam {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['totalGold'] = totalGold;
-    _data['inhibitors'] = inhibitors;
-    _data['towers'] = towers;
-    _data['barons'] = barons;
-    _data['totalKills'] = totalKills;
-    _data['dragons'] = dragons;
-    _data['participants'] = participants.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['totalGold'] = totalGold;
+    data['inhibitors'] = inhibitors;
+    data['towers'] = towers;
+    data['barons'] = barons;
+    data['totalKills'] = totalKills;
+    data['dragons'] = dragons;
+    data['participants'] = participants.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -240,17 +240,17 @@ class Participants {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['participantId'] = participantId;
-    _data['totalGold'] = totalGold;
-    _data['level'] = level;
-    _data['kills'] = kills;
-    _data['deaths'] = deaths;
-    _data['assists'] = assists;
-    _data['creepScore'] = creepScore;
-    _data['currentHealth'] = currentHealth;
-    _data['maxHealth'] = maxHealth;
-    return _data;
+    final data = <String, dynamic>{};
+    data['participantId'] = participantId;
+    data['totalGold'] = totalGold;
+    data['level'] = level;
+    data['kills'] = kills;
+    data['deaths'] = deaths;
+    data['assists'] = assists;
+    data['creepScore'] = creepScore;
+    data['currentHealth'] = currentHealth;
+    data['maxHealth'] = maxHealth;
+    return data;
   }
 }
 
@@ -285,14 +285,14 @@ class RedTeam {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['totalGold'] = totalGold;
-    _data['inhibitors'] = inhibitors;
-    _data['towers'] = towers;
-    _data['barons'] = barons;
-    _data['totalKills'] = totalKills;
-    _data['dragons'] = dragons;
-    _data['participants'] = participants.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['totalGold'] = totalGold;
+    data['inhibitors'] = inhibitors;
+    data['towers'] = towers;
+    data['barons'] = barons;
+    data['totalKills'] = totalKills;
+    data['dragons'] = dragons;
+    data['participants'] = participants.map((e) => e.toJson()).toList();
+    return data;
   }
 }

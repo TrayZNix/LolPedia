@@ -2,6 +2,8 @@
 //
 //     final leagues = leaguesFromJson(jsonString);
 
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 
 Leagues leaguesFromJson(String str) => Leagues.fromJson(json.decode(str));

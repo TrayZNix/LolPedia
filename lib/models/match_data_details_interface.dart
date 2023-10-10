@@ -9,9 +9,9 @@ class MatchDetailsInterface {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['frames'] = frames.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['frames'] = frames.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -31,10 +31,10 @@ class Frames {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['rfc460Timestamp'] = rfc460Timestamp;
-    _data['participants'] = participants.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['rfc460Timestamp'] = rfc460Timestamp;
+    data['participants'] = participants.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -112,30 +112,30 @@ class ParticipantData {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['participantId'] = participantId;
-    _data['level'] = level;
-    _data['kills'] = kills;
-    _data['deaths'] = deaths;
-    _data['assists'] = assists;
-    _data['totalGoldEarned'] = totalGoldEarned;
-    _data['creepScore'] = creepScore;
-    _data['killParticipation'] = killParticipation;
-    _data['championDamageShare'] = championDamageShare;
-    _data['wardsPlaced'] = wardsPlaced;
-    _data['wardsDestroyed'] = wardsDestroyed;
-    _data['attackDamage'] = attackDamage;
-    _data['abilityPower'] = abilityPower;
-    _data['criticalChance'] = criticalChance;
-    _data['attackSpeed'] = attackSpeed;
-    _data['lifeSteal'] = lifeSteal;
-    _data['armor'] = armor;
-    _data['magicResistance'] = magicResistance;
-    _data['tenacity'] = tenacity;
-    _data['items'] = items;
-    _data['perkMetadata'] = perkMetadata.toJson();
-    _data['abilities'] = abilities;
-    return _data;
+    final data = <String, dynamic>{};
+    data['participantId'] = participantId;
+    data['level'] = level;
+    data['kills'] = kills;
+    data['deaths'] = deaths;
+    data['assists'] = assists;
+    data['totalGoldEarned'] = totalGoldEarned;
+    data['creepScore'] = creepScore;
+    data['killParticipation'] = killParticipation;
+    data['championDamageShare'] = championDamageShare;
+    data['wardsPlaced'] = wardsPlaced;
+    data['wardsDestroyed'] = wardsDestroyed;
+    data['attackDamage'] = attackDamage;
+    data['abilityPower'] = abilityPower;
+    data['criticalChance'] = criticalChance;
+    data['attackSpeed'] = attackSpeed;
+    data['lifeSteal'] = lifeSteal;
+    data['armor'] = armor;
+    data['magicResistance'] = magicResistance;
+    data['tenacity'] = tenacity;
+    data['items'] = items;
+    data['perkMetadata'] = perkMetadata.toJson();
+    data['abilities'] = abilities;
+    return data;
   }
 }
 
@@ -156,10 +156,10 @@ class PerkMetadata {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['styleId'] = styleId;
-    _data['subStyleId'] = subStyleId;
-    _data['perks'] = perks;
-    return _data;
+    final data = <String, dynamic>{};
+    data['styleId'] = styleId;
+    data['subStyleId'] = subStyleId;
+    data['perks'] = perks;
+    return data;
   }
 }

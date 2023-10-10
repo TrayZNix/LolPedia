@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/models/league_status_response.dart';
-import 'package:timezone/timezone.dart' as tz;
 import '../../BLOCS/status_seleccion_bloc/status_bloc.dart';
 
 class StatusYSeleccion extends StatelessWidget {
@@ -23,7 +21,7 @@ class StatusYSeleccion extends StatelessWidget {
         behavior: ScrollConfiguration.of(context).copyWith(
             dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse}),
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [WidgetDeReportes(bloc: bloc)],
           ),
@@ -34,8 +32,8 @@ class StatusYSeleccion extends StatelessWidget {
 }
 
 class WidgetDeReportes extends StatelessWidget {
-  StatusBloc bloc;
-  WidgetDeReportes({super.key, required this.bloc});
+  final StatusBloc bloc;
+  const WidgetDeReportes({super.key, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +72,11 @@ class MenuSeleccion extends StatefulWidget {
   final List<Maintenances> widgetsMantenimientos;
   final bool error;
 
-  MenuSeleccion(
+  const MenuSeleccion(
       {super.key,
       required this.widgetsIncidencias,
       required this.widgetsMantenimientos,
-      required this.error}) {}
+      required this.error});
   @override
   State<StatefulWidget> createState() => MenuSeleccionState();
 }
@@ -213,11 +211,19 @@ class MenuSeleccionState extends State<MenuSeleccion> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.engineering,
                             color: Colors.orange,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                            child: Text("INFORME DE MANTENIMIENTO",
+                                style: GoogleFonts.anekDevanagari(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold)),
                           ),
                         ],
                       ),
@@ -245,15 +251,33 @@ class MenuSeleccionState extends State<MenuSeleccion> {
                 indent: 15,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: Text(textoMant,
-                    softWrap: true,
-                    maxLines: 10,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.anekDevanagari(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Text(textoMant,
+                      softWrap: true,
+                      style: GoogleFonts.anekDevanagari(
+                          color: Colors.black, fontSize: 13))),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                child: Row(
+                  children: [
+                    Text("Ultima actualización: ",
+                        softWrap: true,
+                        maxLines: 10,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.anekDevanagari(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                        "${DateFormat('dd/MM/yyyy HH:mm z').format(updatedAt ?? DateTime.now())} BST",
+                        softWrap: true,
+                        maxLines: 10,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.anekDevanagari(
+                            color: Colors.black, fontSize: 13)),
+                  ],
+                ),
               ),
             ],
           ),
@@ -474,6 +498,5 @@ class MenuSeleccionState extends State<MenuSeleccion> {
         ],
       ),
     );
-    ;
   }
 }

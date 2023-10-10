@@ -24,13 +24,13 @@ class LeagueStatusResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['locales'] = locales;
-    _data['maintenances'] = maintenances.map((e) => e.toJson()).toList();
-    _data['incidents'] = incidents.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['locales'] = locales;
+    data['maintenances'] = maintenances.map((e) => e.toJson()).toList();
+    data['incidents'] = incidents.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -71,17 +71,17 @@ class Maintenances {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['archive_at'] = archiveAt;
-    _data['titles'] = titles.map((e) => e.toJson()).toList();
-    _data['maintenance_status'] = maintenanceStatus;
-    _data['id'] = id;
-    _data['created_at'] = createdAt;
-    _data['updates'] = updates.map((e) => e.toJson()).toList();
-    _data['incident_severity'] = incidentSeverity;
-    _data['platforms'] = platforms;
-    _data['updated_at'] = updatedAt;
-    return _data;
+    final data = <String, dynamic>{};
+    data['archive_at'] = archiveAt;
+    data['titles'] = titles.map((e) => e.toJson()).toList();
+    data['maintenance_status'] = maintenanceStatus;
+    data['id'] = id;
+    data['created_at'] = createdAt;
+    data['updates'] = updates.map((e) => e.toJson()).toList();
+    data['incident_severity'] = incidentSeverity;
+    data['platforms'] = platforms;
+    data['updated_at'] = updatedAt;
+    return data;
   }
 }
 
@@ -99,10 +99,10 @@ class Titles {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content;
-    _data['locale'] = locale;
-    return _data;
+    final data = <String, dynamic>{};
+    data['content'] = content;
+    data['locale'] = locale;
+    return data;
   }
 }
 
@@ -140,15 +140,15 @@ class Updates {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['translations'] = translations.map((e) => e.toJson()).toList();
-    _data['id'] = id;
-    _data['created_at'] = createdAt;
-    _data['publish'] = publish;
-    _data['updated_at'] = updatedAt;
-    _data['author'] = author;
-    _data['publish_locations'] = publishLocations;
-    return _data;
+    final data = <String, dynamic>{};
+    data['translations'] = translations.map((e) => e.toJson()).toList();
+    data['id'] = id;
+    data['created_at'] = createdAt;
+    data['publish'] = publish;
+    data['updated_at'] = updatedAt;
+    data['author'] = author;
+    data['publish_locations'] = publishLocations;
+    return data;
   }
 }
 
@@ -166,10 +166,10 @@ class Translations {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content;
-    _data['locale'] = locale;
-    return _data;
+    final data = <String, dynamic>{};
+    data['content'] = content;
+    data['locale'] = locale;
+    return data;
   }
 }
 
@@ -210,17 +210,17 @@ class Incidents {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['archive_at'] = archiveAt;
-    _data['id'] = id;
-    _data['updates'] = updates;
-    _data['created_at'] = createdAt;
-    _data['maintenance_status'] = maintenanceStatus;
-    _data['updated_at'] = updatedAt;
-    _data['platforms'] = platforms;
-    _data['titles'] = titles;
-    _data['incident_severity'] = incidentSeverity;
-    return _data;
+    final data = <String, dynamic>{};
+    data['archive_at'] = archiveAt;
+    data['id'] = id;
+    data['updates'] = updates;
+    data['created_at'] = createdAt;
+    data['maintenance_status'] = maintenanceStatus;
+    data['updated_at'] = updatedAt;
+    data['platforms'] = platforms;
+    data['titles'] = titles;
+    data['incident_severity'] = incidentSeverity;
+    return data;
   }
 }
 
@@ -238,10 +238,10 @@ class Id {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['locale'] = locale;
-    _data['content'] = content;
-    return _data;
+    final data = <String, dynamic>{};
+    data['locale'] = locale;
+    data['content'] = content;
+    return data;
   }
 }
 
@@ -259,10 +259,10 @@ class UpdatedAt {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content;
-    _data['locale'] = locale;
-    return _data;
+    final data = <String, dynamic>{};
+    data['content'] = content;
+    data['locale'] = locale;
+    return data;
   }
 }
 
@@ -298,14 +298,14 @@ class IncidentSeverity {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['created_at'] = createdAt;
-    _data['author'] = author;
-    _data['publish'] = publish;
-    _data['translations'] = translations.map((e) => e.toJson()).toList();
-    _data['publish_locations'] = publishLocations;
-    _data['id'] = id;
-    _data['updated_at'] = updatedAt;
-    return _data;
+    final data = <String, dynamic>{};
+    data['created_at'] = createdAt;
+    data['author'] = author;
+    data['publish'] = publish;
+    data['translations'] = translations.map((e) => e.toJson()).toList();
+    data['publish_locations'] = publishLocations;
+    data['id'] = id;
+    data['updated_at'] = updatedAt;
+    return data;
   }
 }

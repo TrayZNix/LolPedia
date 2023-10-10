@@ -43,13 +43,28 @@ class Data {
       };
 }
 
+class Streams {
+  String? parameter;
+  String? locale;
+  String? provider;
+  int? offset;
+
+  Streams({this.parameter, this.locale, this.provider, this.offset});
+
+  factory Streams.fromJson(Map<String, dynamic> json) => Streams(
+      parameter: json["parameter"],
+      locale: json["locale"],
+      provider: json["provider"],
+      offset: json["offset"]);
+}
+
 class Event {
   String? id;
   String? type;
   Tournament? tournament;
   League? league;
   Match? match;
-  List<dynamic>? streams;
+  List<Streams>? streams;
 
   Event({
     this.id,
@@ -66,7 +81,8 @@ class Event {
         tournament: Tournament.fromJson(json["tournament"]),
         league: League.fromJson(json["league"]),
         match: Match.fromJson(json["match"]),
-        streams: List<dynamic>.from(json["streams"].map((x) => x)),
+        streams:
+            List<Streams>.from(json["streams"].map((x) => Streams.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -228,7 +244,7 @@ class MatchTeam {
         name: json["name"],
         code: json["code"],
         image: json["image"],
-        result: Result.fromJson(json["result"]),
+        result: json["result"] != null ? Result.fromJson(json["result"]) : null,
       );
 
   Map<String, dynamic> toJson() => {

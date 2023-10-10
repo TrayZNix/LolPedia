@@ -1,7 +1,7 @@
 name: lol_pedia
 description: A new Flutter project.
 publish_to: "none"
-version: 1.0.10+13
+version: 2.0.21+18
 
 environment:
   sdk: ">=3.0.0-204.0.dev <4.0.0"
@@ -9,15 +9,15 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  http: ^0.13.5
-  flutter_bloc: ^8.1.2
+  http: ^1.1.0
+  flutter_bloc: ^8.1.3
   get_it: ^7.2.0
   injectable: ^2.1.0
   animated_text_kit: ^4.2.2
   meta: ^1.9.0
   build_runner: ^2.4.0
   bloc: ^8.1.2
-  bloc_concurrency: ^0.2.1
+  bloc_concurrency: ^0.2.2
   equatable: ^2.0.5
   shared_preferences: ^2.0.18
   responsive_grid_list: ^1.3.1
@@ -34,11 +34,13 @@ dependencies:
   cached_network_image: ^3.2.3
   url_launcher: ^6.1.14
   font_awesome_flutter: ^10.5.0
+  path_provider: ^2.0.3
+  basic_utils: ^5.6.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  bloc_test: ^9.1.0
+  bloc_test: ^9.1.4
   mocktail: ^0.3.0
   very_good_analysis: ^3.1.0
   injectable_generator: ^2.1.3
@@ -59,6 +61,28 @@ flutter:
     - assets/img/dragons/chemtech.png
     - assets/img/dragons/hextech.png
     - assets/img/dragons/elder.png
+
+    - assets/img/stats/ability_power.png
+    - assets/img/stats/armor.png
+    - assets/img/stats/armor_pen.png
+    - assets/img/stats/attack_damage.png
+    - assets/img/stats/attack_speed.png
+    - assets/img/stats/cdr_reduction.png
+    - assets/img/stats/critical_chance.png
+    - assets/img/stats/health.png
+    - assets/img/stats/health_regen.png
+    - assets/img/stats/mana.png
+    - assets/img/stats/mana_regen.png
+    - assets/img/stats/life_steal.png
+    - assets/img/stats/magic_pen.png
+    - assets/img/stats/magic_resist.png
+    - assets/img/stats/move_speed.png
+    - assets/img/stats/omnivamp.png
+    - assets/img/stats/range.png
+    - assets/img/stats/tenacity.png
+
+    - assets/img/misc/gold.png
+
 flutter_icons:
   android: true
   ios: true

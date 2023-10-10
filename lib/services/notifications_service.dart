@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -85,7 +86,8 @@ class NotificationService {
   }
 
   int calcularId(int number) {
-    number = number - 13803666586180000;
+    print(number);
+    number = number - 110852960000000000;
     int count = 0;
     int sum = 0;
     int num = number.abs();
@@ -109,6 +111,6 @@ class NotificationService {
       result *= -1;
     }
 
-    return result;
+    return number;
   }
 }

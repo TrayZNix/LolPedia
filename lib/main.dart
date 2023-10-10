@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lol_pedia/UIs/lista_ligas/lista_ligas.dart';
@@ -11,7 +12,7 @@ import 'package:lol_pedia/services/notifications_service.dart';
 import 'package:lol_pedia/widgets/app_bar_con_busqueda.dart';
 import 'BLOCS/homepage_bloc/homepage_bloc.dart';
 import 'config/locator.dart';
-import 'UIs/homepage/Homepage.dart';
+import 'UIs/homepage/homepage.dart';
 import 'package:http/http.dart' as http;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
@@ -32,7 +33,7 @@ Future<void> main() async {
 class Aplicacion extends StatefulWidget {
   Aplicacion({super.key});
   final HomepageBloc bloc = HomepageBloc();
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   void filtrarCampeones(String filtro) {
     bloc.filter = filtro;
@@ -90,14 +91,15 @@ class AplicacionState extends State<Aplicacion> {
                 bloc: widget.bloc,
               )
             : widget.currentIndex == 1
-                ? const StatusYSeleccion()
-                : ListaLigas(
+                ? ListaLigas(
                     bloc: widget.bloc,
-                  ),
+                  )
+                : const StatusYSeleccion(),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: widget.currentIndex,
           onTap: (index) {
             cambiarIndex(index);
+            HapticFeedback.mediumImpact();
           },
           selectedItemColor: Colors.white,
           unselectedLabelStyle:
@@ -109,9 +111,9 @@ class AplicacionState extends State<Aplicacion> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.info_outline_rounded), label: "Campeones"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.leaderboard_rounded), label: "Estado"),
+                icon: Icon(Icons.videogame_asset_rounded), label: "Esport"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.videogame_asset_rounded), label: "Esport")
+                icon: Icon(Icons.leaderboard_rounded), label: "Estado"),
           ],
         ),
       ),

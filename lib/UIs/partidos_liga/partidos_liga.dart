@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
+import 'package:basic_utils/basic_utils.dart';
 
 import '../../models/partidos_ligas.dart';
 
@@ -32,6 +33,7 @@ class PartidosLigaState extends State<PartidosLiga> {
   Future<ScheduleData>? leaguesFuture;
   ItemScrollController matchScrollController = ItemScrollController();
   int? matchInProgressIndex;
+  int scrollTo = 0;
 
   @override
   void initState() {
@@ -41,10 +43,23 @@ class PartidosLigaState extends State<PartidosLiga> {
   }
 
   void findMatchInProgressIndex() {
+    DateTime fechaActual = DateTime.now();
+    DateTime fechaMasCercana = DateTime(2009);
     leaguesFuture!.then((snapshot) {
       final events = snapshot.schedule?.events;
       if (events != null) {
         for (int index = events.length - 1; index >= 0; index--) {
+          DateTime fechaPartido =
+              DateTime.parse(events[index].startTime.toString());
+          if (fechaActual.difference(fechaMasCercana).abs() >
+              fechaActual.difference(fechaPartido).abs()) {
+            fechaMasCercana = fechaPartido;
+            setState(() {
+              scrollTo = (events.length - index - 1) >= 0
+                  ? events.length - index - 1
+                  : 0;
+            });
+          }
           if (events[index].state == "inProgress") {
             setState(() {
               matchInProgressIndex = events.length - index;
@@ -69,7 +84,7 @@ class PartidosLigaState extends State<PartidosLiga> {
               style: TextStyle(fontFamily: "super_punch", fontSize: 40),
             ),
             const Spacer(),
-            SizedBox(
+            const SizedBox(
               height: 45,
               child: VerticalDivider(
                 color: Colors.white,
@@ -128,7 +143,7 @@ class PartidosLigaState extends State<PartidosLiga> {
             } else if (snapshot.hasData) {
               final leagues = snapshot.data!;
               List<Event> eventos = leagues.schedule!.events!.toList();
-              return ScrollablePositionedList.builder(
+              Widget widget = ScrollablePositionedList.builder(
                 itemScrollController: matchScrollController,
                 itemCount: eventos.length,
                 itemBuilder: (context, index) {
@@ -162,14 +177,22 @@ class PartidosLigaState extends State<PartidosLiga> {
                   if (eventos[reverseIndex].type.toString() == "match") {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            return MatchDetailsPage(
-                                fecha: fechaAMostrar,
-                                matchId:
-                                    eventos[reverseIndex].match!.id.toString());
-                          },
-                        ));
+                        if (eventos[reverseIndex].state != "unstarted") {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return MatchDetailsPage(
+                                  fecha: fechaAMostrar,
+                                  matchId: eventos[reverseIndex]
+                                      .match!
+                                      .id
+                                      .toString());
+                            },
+                          ));
+                        } else {
+                          SnackBar snackBar = const SnackBar(
+                              content: Text("El partido aún no ha comenzado"));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       },
                       child: Card(
                         color: Colors.black87,
@@ -221,9 +244,10 @@ class PartidosLigaState extends State<PartidosLiga> {
                                                     alignment:
                                                         Alignment.centerRight,
                                                     child: Text(
-                                                      eventos[reverseIndex]
-                                                              .blockName ??
-                                                          "",
+                                                      StringUtils.capitalize(
+                                                          eventos[reverseIndex]
+                                                              .blockName
+                                                              .toString()),
                                                       style: GoogleFonts
                                                           .anekDevanagari(
                                                               color:
@@ -494,6 +518,9 @@ class PartidosLigaState extends State<PartidosLiga> {
                   }
                 },
               );
+              Future.delayed(const Duration(milliseconds: 250)).then(
+                  (value) => matchScrollController.jumpTo(index: scrollTo));
+              return widget;
             } else {
               // Si no hay datos, muestra un mensaje indicando que no hay ligas disponibles
               return const Center(
@@ -526,7 +553,7 @@ class FloatingbuttonIPState extends State<FloatingbuttonIP> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Colors.white,
-      child: RecordingIndicator(),
+      child: const RecordingIndicator(),
       onPressed: () {
         widget.matchScrollController
             .jumpTo(index: (widget.matchInProgressIndex));

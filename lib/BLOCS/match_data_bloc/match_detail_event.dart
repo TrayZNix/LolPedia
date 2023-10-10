@@ -10,3 +10,5 @@ abstract class MatchDetailsEvent extends Equatable {
 class LoadMatchDetailsEvent extends MatchDetailsEvent {}
 
 class RecargarDetallesPartidoEvent extends MatchDetailsEvent {}
+
+class ChangeDetailsTabEvent extends MatchDetailsEvent {}

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:lol_pedia/UIs/match_details/match_details_page.dart';
 import 'package:lol_pedia/dinamic_general_variables.dart';
 import 'package:lol_pedia/models/leagues.dart';
 import 'package:lol_pedia/models/match_data_details_interface.dart';
@@ -55,8 +54,14 @@ class EsportRepository {
 
   Future<MatchDetailsWindowInterface> getConcreteMatchDataWindow(
       String id) async {
-    String date =
-        DateTime.now().toUtc().subtract(Duration(minutes: 1)).toIso8601String();
+    String date = DateTime.now()
+        .toUtc()
+        .subtract(const Duration(minutes: 1))
+        .toIso8601String();
+    // String date = DateTime.fromMicrosecondsSinceEpoch(1694282403000 * 1000)
+    //     .toUtc()
+    //     .add(const Duration(minutes: 30))
+    //     .toIso8601String();
     String finalString = "${date.substring(0, (date.lastIndexOf(".") - 1))}0Z";
     var response = await http.get(
         Uri.parse("$feedApiUrl/window/$id?startingTime=$finalString"),
@@ -66,8 +71,14 @@ class EsportRepository {
   }
 
   Future<MatchDetailsInterface> getConcreteMatchDetail(String id) async {
-    String date =
-        DateTime.now().toUtc().subtract(Duration(minutes: 1)).toIso8601String();
+    String date = DateTime.now()
+        .toUtc()
+        .subtract(const Duration(minutes: 1))
+        .toIso8601String();
+    // String date = DateTime.fromMicrosecondsSinceEpoch(1694282403000 * 1000)
+    //     .toUtc()
+    //     .add(const Duration(minutes: 30))
+    //     .toIso8601String();
     String finalString = "${date.substring(0, (date.lastIndexOf(".") - 1))}0Z";
     var response = await http.get(
         Uri.parse("$feedApiUrl/details/$id?startingTime=$finalString"),

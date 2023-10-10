@@ -1,10 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lol_pedia/models/items_interface.dart';
 import 'package:lol_pedia/models/match_data_details_interface.dart';
 import 'package:lol_pedia/models/match_data_window_interface.dart';
+import 'package:lol_pedia/models/match_details_interface.dart';
+import 'package:lol_pedia/repositories/data_dragon_repository.dart';
 import 'package:lol_pedia/repositories/esport_repository.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -21,10 +25,12 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 
 class MatchDetailBloc
     extends Bloc<MatchDetailsEvent, OriginalMatchDetailsState> {
-  final String matchId;
+  final List<Game> matchId;
   int gamesPlayed;
+  int currentDetailIndex = 0;
+  late Items items;
 
-  MatchDetailBloc(this.matchId, this.gamesPlayed)
+  MatchDetailBloc(this.matchId, this.gamesPlayed, this.currentDetailIndex)
       : super(MatchDetailInitial()) {
     on<LoadMatchDetailsEvent>(
       cargarDetallesPartido,
@@ -34,20 +40,30 @@ class MatchDetailBloc
       recargarDetallesPartido,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<ChangeDetailsTabEvent>(
+      returnState,
+      transformer: throttleDroppable(Duration.zero),
+    );
   }
 
   Future<void> cargarDetallesPartido(LoadMatchDetailsEvent event,
       Emitter<OriginalMatchDetailsState> emit) async {
     emit(MatchDetailLoading());
     try {
-      int id = int.parse(matchId);
-      id = id + gamesPlayed;
       MatchDetailsWindowInterface detailsWindows = await GetIt.I
           .get<EsportRepository>()
-          .getConcreteMatchDataWindow(id.toString());
+          .getConcreteMatchDataWindow(matchId[gamesPlayed - 1].id.toString());
       MatchDetailsInterface details = await GetIt.I
           .get<EsportRepository>()
-          .getConcreteMatchDetail(id.toString());
+          .getConcreteMatchDetail(matchId[gamesPlayed - 1].id.toString());
+      String version = "";
+      List<String> partes =
+          detailsWindows.gameMetadata.patchVersion.toString().split('.');
+      if (partes.length >= 3) {
+        version = "${partes[0]}.${partes[1]}.1";
+      }
+      items = await GetIt.I.get<DataDragonRepository>().getItems(version);
+
       emit(const MatchDetailsState().copyWith(
           matchDetails: details,
           matchDetailsWindows: detailsWindows,
@@ -60,14 +76,12 @@ class MatchDetailBloc
   Future<void> recargarDetallesPartido(RecargarDetallesPartidoEvent event,
       Emitter<OriginalMatchDetailsState> emit) async {
     try {
-      int id = int.parse(matchId);
-      id = id + gamesPlayed;
       MatchDetailsWindowInterface detailsWindows = await GetIt.I
           .get<EsportRepository>()
-          .getConcreteMatchDataWindow(id.toString());
+          .getConcreteMatchDataWindow(matchId[gamesPlayed - 1].id.toString());
       MatchDetailsInterface details = await GetIt.I
           .get<EsportRepository>()
-          .getConcreteMatchDetail(id.toString());
+          .getConcreteMatchDetail(matchId[gamesPlayed - 1].id.toString());
       emit(const MatchDetailsState().copyWith(
           matchDetails: details,
           matchDetailsWindows: detailsWindows,
@@ -75,5 +89,13 @@ class MatchDetailBloc
     } catch (e) {
       emit(MatchDetailLoadFail());
     }
+  }
+
+  Future<void> returnState(ChangeDetailsTabEvent event,
+      Emitter<OriginalMatchDetailsState> emit) async {
+    var estado = state;
+    emit(MatchDetailLoading());
+    Future.delayed(Duration(milliseconds: 1150));
+    emit(estado);
   }
 }
