@@ -94,9 +94,7 @@ class NotificationService {
 
   int calcularId(String teams, String fecha) {
     teams = teams + fecha;
-    print(teams);
     var numberHash = teams.hashCode;
-    print(numberHash);
     int count = 0;
     int sum = 0;
     int num = numberHash.abs();
