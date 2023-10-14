@@ -1,4 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
+import 'package:lol_pedia/dinamic_general_variables.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
@@ -33,8 +35,8 @@ class NotificationService {
 
   Future<void> showNotification(
     int matchId,
-    String team1,
-    String team2,
+    String teamA,
+    String teamB,
     String nombrePartido,
     String liga,
     tz.TZDateTime fechaPartido,
@@ -50,28 +52,31 @@ class NotificationService {
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
 
-    int notificationId = calcularId(matchId);
+    int notificationId =
+        calcularId(teamA + teamB, fechaPartido.toIso8601String());
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       notificationId,
-      (team1 != 'TBD' && team2 != 'TBD')
-          ? '$team1 Vs. $team2'
+      (teamA != 'TBD' && teamB != 'TBD')
+          ? '$teamA Vs. $teamB'
           : '$nombrePartido | $liga',
-      (team1 != 'TBD' && team2 != 'TBD')
+      (teamA != 'TBD' && teamB != 'TBD')
           ? '¡Corre! El partido "$nombrePartido" de la liga "$liga" empezará pronto'
           : '¡Corre! El partido empezará pronto',
-      fechaPartido,
+      fechaPartido
+          .subtract(GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset),
       notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
-  Future<bool> checkNotificationExists(int id) async {
+  Future<bool> checkNotificationExists(
+      String teamA, String teamB, String fecha) async {
     List<PendingNotificationRequest> pendingNotifications =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    int notificationId = calcularId(id);
+    int notificationId = calcularId(teamA + teamB, fecha);
     for (var notification in pendingNotifications) {
       if (notification.id == notificationId) {
         return true;
@@ -81,16 +86,20 @@ class NotificationService {
     return false;
   }
 
-  Future<void> cancelNotification(int notificationId) async {
-    await flutterLocalNotificationsPlugin.cancel(calcularId(notificationId));
+  Future<void> cancelNotification(
+      String teamA, String teamB, tz.TZDateTime fecha) async {
+    await flutterLocalNotificationsPlugin
+        .cancel(calcularId(teamA + teamB, fecha.toIso8601String()));
   }
 
-  int calcularId(int number) {
-    print(number);
-    number = number - 110852960000000000;
+  int calcularId(String teams, String fecha) {
+    teams = teams + fecha;
+    print(teams);
+    var numberHash = teams.hashCode;
+    print(numberHash);
     int count = 0;
     int sum = 0;
-    int num = number.abs();
+    int num = numberHash.abs();
 
     while (num != 0) {
       sum += num % 10;
@@ -107,10 +116,10 @@ class NotificationService {
       result = result * 10 + decimalPart;
     }
 
-    if (number < 0) {
+    if (numberHash < 0) {
       result *= -1;
     }
 
-    return number;
+    return numberHash;
   }
 }

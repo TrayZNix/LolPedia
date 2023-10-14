@@ -588,7 +588,10 @@ class AddNotificationState extends State<AddNotification> {
   @override
   void initState() {
     super.initState();
-    NotificationService().checkNotificationExists(widget.matchId).then((value) {
+    NotificationService()
+        .checkNotificationExists(
+            widget.team1, widget.team2, widget.fechaPartido.toIso8601String())
+        .then((value) {
       setState(() {
         widget.notificationPlaced = value;
       });
@@ -607,16 +610,11 @@ class AddNotificationState extends State<AddNotification> {
       onTap: () {
         HapticFeedback.mediumImpact();
         if (!widget.notificationPlaced) {
-          NotificationService().showNotification(
-              widget.matchId,
-              widget.team1,
-              widget.team2,
-              widget.partido,
-              widget.liga,
-              widget.fechaPartido.subtract(
-                  GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset));
+          NotificationService().showNotification(widget.matchId, widget.team1,
+              widget.team2, widget.partido, widget.liga, widget.fechaPartido);
         } else {
-          NotificationService().cancelNotification(widget.matchId);
+          NotificationService().cancelNotification(
+              widget.team1, widget.team2, widget.fechaPartido);
         }
         setState(() {
           widget.notificationPlaced = !widget.notificationPlaced;
