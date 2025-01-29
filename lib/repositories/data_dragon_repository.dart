@@ -71,7 +71,8 @@ class DataDragonRepository {
     try {
       final response = await http.get(Uri.parse(
           "$dataDragonUrl/$version/data/en_GB/item.json")); //Must be es_ES to extract data correctly
-      if (response.statusCode != 200) throw FileNotFoundException("Items.json");
+      if (response.statusCode != 200)
+        throw const FileNotFoundException("Items.json");
       final jsonMap = json.decode(response.body) as Map<String, dynamic>;
       status = Items.fromJson(jsonMap);
     } catch (error) {

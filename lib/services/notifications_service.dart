@@ -29,8 +29,22 @@ class NotificationService {
         AndroidNotificationDetails('test', 'Notificaciones de prueba');
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        1, "Test", "Esta es una notificacion de pruebas", notificationDetails);
+    // await flutterLocalNotificationsPlugin.show(
+    //     1, "Test", "Esta es una notificacion de pruebas", notificationDetails);
+    String teamA = "test";
+    String teamB = "test";
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      calcularId(teamA + teamB, DateTime.now().toIso8601String()),
+      (teamA != 'TBD' && teamB != 'TBD') ? '$teamA Vs. $teamB' : 'test',
+      (teamA != 'TBD' && teamB != 'TBD')
+          ? '¡Corre! El partido "test" de la liga "test" empezará pronto'
+          : '¡Corre! El partido empezará pronto',
+      tz.TZDateTime.now(tz.getLocation("UTC")).add(const Duration(seconds: 2)),
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   Future<void> showNotification(
@@ -54,7 +68,6 @@ class NotificationService {
 
     int notificationId =
         calcularId(teamA + teamB, fechaPartido.toIso8601String());
-
     await flutterLocalNotificationsPlugin.zonedSchedule(
       notificationId,
       (teamA != 'TBD' && teamB != 'TBD')
@@ -66,7 +79,7 @@ class NotificationService {
       fechaPartido
           .subtract(GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset),
       notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );

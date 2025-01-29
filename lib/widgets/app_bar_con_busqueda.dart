@@ -51,7 +51,10 @@ class AppBarConBusquedaState extends State<AppBarConBusqueda> {
               children: [
                 const Text(
                   "LOLPEDIA",
-                  style: TextStyle(fontFamily: "super_punch", fontSize: 40),
+                  style: TextStyle(
+                      fontFamily: "super_punch",
+                      fontSize: 40,
+                      color: Colors.white),
                 ),
                 widget.integratedSearch
                     ? IconButton(

@@ -33,6 +33,7 @@ class MatchDetailsPage extends StatelessWidget {
           return Scaffold(
               backgroundColor: Colors.grey[800],
               appBar: AppBar(
+                foregroundColor: Colors.white,
                 backgroundColor: Colors.black,
                 title: const Row(
                   children: [
@@ -84,6 +85,7 @@ class MatchDetailsPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.grey[800],
             appBar: AppBar(
+              foregroundColor: Colors.white,
               backgroundColor: Colors.black,
               title: Row(
                 children: [

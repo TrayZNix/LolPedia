@@ -14,15 +14,15 @@ class ChampionDetails extends StatelessWidget {
   final String championName;
   final DynamicGeneralVariables riotDeveloperKey;
 
-  ChampionDetails({Key? key, required this.championName})
-      : riotDeveloperKey = GetIt.I.get<DynamicGeneralVariables>(),
-        super(key: key);
+  ChampionDetails({super.key, required this.championName})
+      : riotDeveloperKey = GetIt.I.get<DynamicGeneralVariables>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
           backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
           title: const Text(
             "LOLPEDIA",
             style: TextStyle(fontFamily: "super_punch", fontSize: 40),
@@ -181,22 +181,25 @@ class ChampionDetails extends StatelessWidget {
                       Positioned(
                           bottom: 15,
                           right: 45,
-                          child: Text(
-                            state.champions?.name ?? "",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontFamily: "super_punch",
-                              fontSize: 40,
-                              shadows: [
-                                Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(5, 5),
-                                    blurRadius: 6),
-                                Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(0, 0),
-                                    blurRadius: 6),
-                              ],
+                          child: IgnorePointer(
+                            ignoring: true,
+                            child: Text(
+                              state.champions?.name ?? "",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: "super_punch",
+                                fontSize: 40,
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(5, 5),
+                                      blurRadius: 6),
+                                  Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(0, 0),
+                                      blurRadius: 6),
+                                ],
+                              ),
                             ),
                           ))
                     ],

@@ -10,10 +10,9 @@ import '../../dinamic_general_variables.dart';
 
 class Homepage extends StatelessWidget {
   Homepage({
-    Key? key,
+    super.key,
     required this.bloc,
-  })  : riotDeveloperKey = GetIt.I.get<DynamicGeneralVariables>(),
-        super(key: key);
+  }) : riotDeveloperKey = GetIt.I.get<DynamicGeneralVariables>();
   final DynamicGeneralVariables riotDeveloperKey;
   final HomepageBloc bloc;
 

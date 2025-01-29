@@ -60,7 +60,7 @@ class AplicacionState extends State<Aplicacion> {
   Widget build(BuildContext context) {
     widget.bloc.add(LoadChampions());
     PreferredSizeWidget appBar;
-    if (widget.currentIndex == 0 || widget.currentIndex == 2) {
+    if (widget.currentIndex == 0 || widget.currentIndex == 1) {
       appBar = AppBarConBusqueda(
         bloc: widget.bloc,
         funcionFiltrado: widget.currentIndex == 0

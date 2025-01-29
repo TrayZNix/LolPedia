@@ -95,7 +95,7 @@ class MatchDetailBloc
       Emitter<OriginalMatchDetailsState> emit) async {
     var estado = state;
     emit(MatchDetailLoading());
-    Future.delayed(Duration(milliseconds: 1150));
+    Future.delayed(const Duration(milliseconds: 1150));
     emit(estado);
   }
 }

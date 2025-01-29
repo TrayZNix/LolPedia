@@ -22,8 +22,8 @@ class PartidosLiga extends StatefulWidget {
   final String idLiga;
   final String nombreLiga;
 
-  const PartidosLiga({Key? key, required this.idLiga, required this.nombreLiga})
-      : super(key: key);
+  const PartidosLiga(
+      {super.key, required this.idLiga, required this.nombreLiga});
 
   @override
   State<StatefulWidget> createState() => PartidosLigaState();
@@ -76,12 +76,14 @@ class PartidosLigaState extends State<PartidosLiga> {
     return Scaffold(
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.black,
         title: Row(
           children: [
             const Text(
               "LOLPEDIA",
-              style: TextStyle(fontFamily: "super_punch", fontSize: 40),
+              style: TextStyle(
+                  fontFamily: "super_punch", fontSize: 40, color: Colors.white),
             ),
             const Spacer(),
             const SizedBox(
@@ -100,6 +102,7 @@ class PartidosLigaState extends State<PartidosLiga> {
                     softWrap: true,
                     maxLines: 2,
                     textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -203,72 +206,189 @@ class PartidosLigaState extends State<PartidosLiga> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        FittedBox(
-                                          child: Card(
-                                            color: eventos[reverseIndex]
-                                                        .state !=
-                                                    "completed"
-                                                ? eventos[reverseIndex].state !=
-                                                        "inProgress"
-                                                    ? Colors.green
-                                                    : Colors.yellow
-                                                : Colors.red,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              border: eventos[reverseIndex]
+                                                          .match!
+                                                          .teams!
+                                                          .first
+                                                          .result
+                                                          ?.outcome ==
+                                                      "win"
+                                                  ? Border.all(
+                                                      color: Colors.yellow)
+                                                  : null,
+                                            ),
+                                            width: 75,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(4.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    eventos[reverseIndex]
-                                                                .state !=
-                                                            "completed"
-                                                        ? eventos[reverseIndex]
-                                                                    .state !=
-                                                                "inProgress"
-                                                            ? fechaAMostrar
-                                                            : "En curso"
-                                                        : "Finalizado | $fechaAMostrar",
-                                                    style: GoogleFonts
-                                                        .anekDevanagari(
-                                                            color: Colors.white,
-                                                            fontSize: 17),
+                                                  CachedNetworkImage(
+                                                    imageUrl:
+                                                        eventos[reverseIndex]
+                                                                .match!
+                                                                .teams!
+                                                                .first
+                                                                .image ??
+                                                            "",
+                                                    fit: BoxFit.contain,
                                                   ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Text(
-                                                      StringUtils.capitalize(
-                                                          eventos[reverseIndex]
-                                                              .blockName
-                                                              .toString()),
-                                                      style: GoogleFonts
-                                                          .anekDevanagari(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(0, 8.0, 0, 0),
+                                                    child: FittedBox(
+                                                      child: Text(
+                                                        eventos[reverseIndex]
+                                                                .match!
+                                                                .teams!
+                                                                .first
+                                                                .name ??
+                                                            "",
+                                                        maxLines: 1,
+                                                        style: GoogleFonts
+                                                            .anekDevanagari(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                           ),
+                                          FittedBox(
+                                            child: Text(
+                                              "  Vs.  ",
+                                              maxLines: 1,
+                                              style: GoogleFonts.anekDevanagari(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              border: eventos[reverseIndex]
+                                                          .match
+                                                          ?.teams
+                                                          ?.last
+                                                          .result
+                                                          ?.outcome ==
+                                                      "win"
+                                                  ? Border.all(
+                                                      color: Colors.yellow)
+                                                  : null,
+                                            ),
+                                            width: 75,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  CachedNetworkImage(
+                                                    imageUrl:
+                                                        eventos[reverseIndex]
+                                                                .match!
+                                                                .teams!
+                                                                .last
+                                                                .image ??
+                                                            "",
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(0, 8.0, 0, 0),
+                                                    child: FittedBox(
+                                                      child: Text(
+                                                        eventos[reverseIndex]
+                                                                .match!
+                                                                .teams!
+                                                                .last
+                                                                .name ??
+                                                            "",
+                                                        maxLines: 1,
+                                                        style: GoogleFonts
+                                                            .anekDevanagari(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  Row(
+                                    children: [
+                                      Card(
+                                        color: eventos[reverseIndex].state !=
+                                                "completed"
+                                            ? eventos[reverseIndex].state !=
+                                                    "inProgress"
+                                                ? Colors.green
+                                                : Colors.yellow
+                                            : Colors.red,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                eventos[reverseIndex].state !=
+                                                        "completed"
+                                                    ? eventos[reverseIndex]
+                                                                .state !=
+                                                            "inProgress"
+                                                        ? fechaAMostrar
+                                                        : "En curso"
+                                                    : "Finalizado | $fechaAMostrar",
+                                                style:
+                                                    GoogleFonts.anekDevanagari(
+                                                        color: Colors.white,
+                                                        fontSize: 12),
+                                              ),
+                                              Text(
+                                                StringUtils.capitalize(
+                                                    eventos[reverseIndex]
+                                                        .blockName
+                                                        .toString()),
+                                                style:
+                                                    GoogleFonts.anekDevanagari(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2,
-                                        ),
-                                        if (eventos[reverseIndex].state ==
-                                            'unstarted')
-                                          AddNotification(
+                                      ),
+                                      if (eventos[reverseIndex].state ==
+                                          'unstarted')
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              12, 0, 0, 0),
+                                          child: AddNotification(
                                             matchId: (BigInt.parse(
                                                     eventos[reverseIndex]
                                                             .match
@@ -295,149 +415,8 @@ class PartidosLigaState extends State<PartidosLiga> {
                                                     .name ??
                                                 "",
                                             fechaPartido: tzDateTime,
-                                          )
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            border: eventos[reverseIndex]
-                                                        .match!
-                                                        .teams!
-                                                        .first
-                                                        .result
-                                                        ?.outcome ==
-                                                    "win"
-                                                ? Border.all(
-                                                    color: Colors.yellow)
-                                                : null,
                                           ),
-                                          width: 150,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                CachedNetworkImage(
-                                                  imageUrl:
-                                                      eventos[reverseIndex]
-                                                              .match!
-                                                              .teams!
-                                                              .first
-                                                              .image ??
-                                                          "",
-                                                  fit: BoxFit.contain,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 18.0, 0, 0),
-                                                  child: FittedBox(
-                                                    child: Text(
-                                                      eventos[reverseIndex]
-                                                              .match!
-                                                              .teams!
-                                                              .first
-                                                              .name ??
-                                                          "",
-                                                      maxLines: 1,
-                                                      style: GoogleFonts
-                                                          .anekDevanagari(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      FittedBox(
-                                        child: Text(
-                                          "  Vs.  ",
-                                          maxLines: 1,
-                                          style: GoogleFonts.anekDevanagari(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            border: eventos[reverseIndex]
-                                                        .match
-                                                        ?.teams
-                                                        ?.last
-                                                        .result
-                                                        ?.outcome ==
-                                                    "win"
-                                                ? Border.all(
-                                                    color: Colors.yellow)
-                                                : null,
-                                          ),
-                                          width: 150,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                CachedNetworkImage(
-                                                  imageUrl:
-                                                      eventos[reverseIndex]
-                                                              .match!
-                                                              .teams!
-                                                              .last
-                                                              .image ??
-                                                          "",
-                                                  fit: BoxFit.contain,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 18.0, 0, 0),
-                                                  child: FittedBox(
-                                                    child: Text(
-                                                      eventos[reverseIndex]
-                                                              .match!
-                                                              .teams!
-                                                              .last
-                                                              .name ??
-                                                          "",
-                                                      maxLines: 1,
-                                                      style: GoogleFonts
-                                                          .anekDevanagari(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                        )
                                     ],
                                   ),
                                 ],
@@ -485,7 +464,7 @@ class PartidosLigaState extends State<PartidosLiga> {
                                                   : "Finalizado | $fechaAMostrar",
                                               style: GoogleFonts.anekDevanagari(
                                                   color: Colors.white,
-                                                  fontSize: 17),
+                                                  fontSize: 12),
                                             ),
                                           ),
                                         ),
