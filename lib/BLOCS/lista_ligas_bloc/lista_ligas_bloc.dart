@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lol_pedia/models/league_status_response.dart';
+import 'package:lolpedia/models/league_status_response.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -22,13 +22,17 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 
 class ListaLigasBloc extends Bloc<ListaLigasEvent, ListaLigasState> {
   ListaLigasBloc() : super(StatusInitial()) {
-    on<LoadStatus>(cargarStatus,
-        transformer: throttleDroppable(throttleDuration));
+    on<LoadStatus>(
+      cargarStatus,
+      transformer: throttleDroppable(throttleDuration),
+    );
   }
 }
 
 Future<void> cargarStatus(
-    LoadStatus event, Emitter<ListaLigasState> emit) async {
+  LoadStatus event,
+  Emitter<ListaLigasState> emit,
+) async {
   emit(StatusLoading());
   DataDragonRepository repo = GetIt.I.get<DataDragonRepository>();
   LeagueStatusResponse? estado = await repo.getLeagueStatus();

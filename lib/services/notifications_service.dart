@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lol_pedia/dinamic_general_variables.dart';
+import 'package:lolpedia/dinamic_general_variables.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
@@ -27,8 +27,9 @@ class NotificationService {
 
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('test', 'Notificaciones de prueba');
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+    );
     // await flutterLocalNotificationsPlugin.show(
     //     1, "Test", "Esta es una notificacion de pruebas", notificationDetails);
     String teamA = "test";
@@ -63,11 +64,14 @@ class NotificationService {
 
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('eventos', 'Notificaciones de partidos');
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+    );
 
-    int notificationId =
-        calcularId(teamA + teamB, fechaPartido.toIso8601String());
+    int notificationId = calcularId(
+      teamA + teamB,
+      fechaPartido.toIso8601String(),
+    );
     await flutterLocalNotificationsPlugin.zonedSchedule(
       notificationId,
       (teamA != 'TBD' && teamB != 'TBD')
@@ -76,8 +80,9 @@ class NotificationService {
       (teamA != 'TBD' && teamB != 'TBD')
           ? '¡Corre! El partido "$nombrePartido" de la liga "$liga" empezará pronto'
           : '¡Corre! El partido empezará pronto',
-      fechaPartido
-          .subtract(GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset),
+      fechaPartido.subtract(
+        GetIt.I.get<DynamicGeneralVariables>().timeZoneOffset,
+      ),
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -86,7 +91,10 @@ class NotificationService {
   }
 
   Future<bool> checkNotificationExists(
-      String teamA, String teamB, String fecha) async {
+    String teamA,
+    String teamB,
+    String fecha,
+  ) async {
     List<PendingNotificationRequest> pendingNotifications =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     int notificationId = calcularId(teamA + teamB, fecha);
@@ -100,9 +108,13 @@ class NotificationService {
   }
 
   Future<void> cancelNotification(
-      String teamA, String teamB, tz.TZDateTime fecha) async {
-    await flutterLocalNotificationsPlugin
-        .cancel(calcularId(teamA + teamB, fecha.toIso8601String()));
+    String teamA,
+    String teamB,
+    tz.TZDateTime fecha,
+  ) async {
+    await flutterLocalNotificationsPlugin.cancel(
+      calcularId(teamA + teamB, fecha.toIso8601String()),
+    );
   }
 
   int calcularId(String teams, String fecha) {

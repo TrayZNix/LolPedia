@@ -1,4 +1,4 @@
-# lol_pedia
+# lolpedia
 
 A new Flutter project.
 

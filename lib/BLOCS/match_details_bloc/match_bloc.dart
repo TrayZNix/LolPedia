@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lol_pedia/repositories/esport_repository.dart';
+import 'package:lolpedia/repositories/esport_repository.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
@@ -31,13 +31,17 @@ class MatchBloc extends Bloc<MatchEvent, MatchState> {
   }
 
   Future<void> cargarDetallesPartido(
-      LoadMatchEvent event, Emitter<MatchState> emit) async {
+    LoadMatchEvent event,
+    Emitter<MatchState> emit,
+  ) async {
     emit(MatchLoading());
     try {
-      MatchDataInterface details =
-          await GetIt.I.get<EsportRepository>().getMatchDetails(matchId);
+      MatchDataInterface details = await GetIt.I
+          .get<EsportRepository>()
+          .getMatchDetails(matchId);
       emit(
-          const MatchDataState().copyWith(matchDetails: details, loaded: true));
+        const MatchDataState().copyWith(matchDetails: details, loaded: true),
+      );
     } catch (e) {
       emit(MatchLoadFail());
     }

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lol_pedia/models/league_status_response.dart';
+import 'package:lolpedia/models/league_status_response.dart';
 // ignore: depend_on_referenced_packages
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -22,8 +22,10 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 
 class StatusBloc extends Bloc<StatusEvent, StatusState> {
   StatusBloc() : super(StatusInitial()) {
-    on<LoadStatus>(cargarStatus,
-        transformer: throttleDroppable(throttleDuration));
+    on<LoadStatus>(
+      cargarStatus,
+      transformer: throttleDroppable(throttleDuration),
+    );
   }
 }
 

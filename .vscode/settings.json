@@ -1,13 +1,3 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "editor.overviewRulerBorder": false,
-  "editor.hideCursorInOverviewRuler": true,
-  "editor.guides.indentation": false,
-  "indenticator.width": 0.005,
-  "indenticator.color.dark": "rgba(255,255,255,0.1)",
-  "[python]": {
-    "editor.formatOnType": true
-  },
-  "breadcrumbs.enabled": false,
-  "workbench.statusBar.visible": true
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

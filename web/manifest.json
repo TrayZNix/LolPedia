@@ -1,6 +1,6 @@
 {
-    "name": "lol_pedia",
-    "short_name": "lol_pedia",
+    "name": "lolpedia",
+    "short_name": "lolpedia",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
