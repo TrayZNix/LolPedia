@@ -22,16 +22,19 @@ class NotificationService {
     await Permission.notification.isDenied.then((value) {
       if (value) {
         Permission.notification.request();
+        AndroidFlutterLocalNotificationsPlugin().requestExactAlarmsPermission();
       }
     });
-
+    await Permission.scheduleExactAlarm.isDenied.then((value) {
+      if (value) {
+        Permission.scheduleExactAlarm.request();
+      }
+    });
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('test', 'Notificaciones de prueba');
     const NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
     );
-    // await flutterLocalNotificationsPlugin.show(
-    //     1, "Test", "Esta es una notificacion de pruebas", notificationDetails);
     String teamA = "test";
     String teamB = "test";
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -40,7 +43,7 @@ class NotificationService {
       (teamA != 'TBD' && teamB != 'TBD')
           ? '¡Corre! El partido "test" de la liga "test" empezará pronto'
           : '¡Corre! El partido empezará pronto',
-      tz.TZDateTime.now(tz.getLocation("UTC")).add(const Duration(seconds: 2)),
+      tz.TZDateTime.now(tz.getLocation("UTC")).add(const Duration(seconds: 10)),
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -133,7 +136,6 @@ class NotificationService {
     double average = sum / count;
     int result = average.toInt();
 
-    // Si hay decimales, convertirlos en parte del entero resultante
     if (average != result.toDouble()) {
       int decimalPart = (average * 10).toInt();
       result = result * 10 + decimalPart;

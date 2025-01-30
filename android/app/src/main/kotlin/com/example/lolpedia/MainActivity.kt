@@ -1,4 +1,4 @@
-package com.example.lolpedia
+package com.robertocarvajal.lolpedia
 
 import io.flutter.embedding.android.FlutterActivity
 
