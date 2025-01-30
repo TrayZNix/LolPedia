@@ -36,6 +36,6 @@ LOLPedia se reserva el derecho de actualizar o modificar esta Política de priva
 
 Si tienes alguna pregunta o inquietud acerca de esta Política de privacidad o sobre nuestras prácticas de privacidad, puedes contactarnos a través de los siguientes medios:
 
-Dirección de correo electrónico: [contacto@lolpedia.com](mailto:contacto@lolpedia.com)
+Dirección de correo electrónico: [robertocvcode@gmail.com](mailto:robertocvcode@gmail.com)
 
 Agradecemos tu confianza en LOLPedia y nos comprometemos a proteger tu privacidad mientras disfrutas de nuestra aplicación.

@@ -1,0 +1,2 @@
+C:/Users/rober/Desktop/asffag/LolPedia/android/app/.cxx/RelWithDebInfo/1c3g3e5x/x86/CMakeFiles/edit_cache.dir
+C:/Users/rober/Desktop/asffag/LolPedia/android/app/.cxx/RelWithDebInfo/1c3g3e5x/x86/CMakeFiles/rebuild_cache.dir
